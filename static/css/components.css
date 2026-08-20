@@ -1,0 +1,328 @@
+/* ==========================================================================
+   LLaDA-UI project page — components.css
+   Section content blocks: highlight cards, architecture cards, training
+   stages, figures, prompt/action-space code, analysis tiles, callouts,
+   limitations, BibTeX card.
+   ========================================================================== */
+
+/* Highlight cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 780px) { .cards { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(62, 108, 196, 0.5);
+  box-shadow: var(--shadow-soft);
+}
+.card .icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--tint);
+  color: var(--indigo-bright);
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+}
+.card .icon svg { width: 22px; height: 22px; }
+.card h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.card p strong { color: var(--ink); font-weight: 600; }
+
+/* Architecture component cards — three parts of the model */
+.arch-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 26px;
+}
+@media (max-width: 860px) { .arch-cards { grid-template-columns: 1fr; } }
+
+.arch-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+}
+.arch-card .arch-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b0532f;
+  background: var(--mask-soft);
+  border-radius: 6px;
+  padding: 3px 9px;
+}
+.arch-card h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17.5px;
+  margin: 12px 0 8px;
+}
+.arch-card p { margin: 0; font-size: 14.5px; color: var(--muted); }
+.arch-card .arch-spec {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--indigo);
+}
+
+/* Training stage cards — S0/S1/S2 curriculum is a real sequence */
+.stages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+@media (max-width: 860px) { .stages { grid-template-columns: 1fr; } }
+
+.stage {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--indigo-bright);
+  border-radius: 14px;
+  padding: 22px;
+}
+.stage .stage-no {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--indigo-bright);
+}
+.stage h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17.5px;
+  margin: 8px 0 8px;
+}
+.stage p { margin: 0; font-size: 14.5px; color: var(--muted); }
+.stage .stage-facts {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--indigo);
+}
+.stage .stage-facts li { margin-top: 3px; }
+
+/* A wider stage card used for the SFT block */
+.stage.wide { border-top-color: var(--mask); }
+.stage.wide .stage-no { color: #b0532f; }
+
+/* Objective / trick list */
+.tricks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 16px;
+  margin-top: 26px;
+}
+@media (max-width: 780px) { .tricks { grid-template-columns: 1fr; } }
+.trick {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.trick b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+/* Figures */
+.figure {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 18px 14px;
+  margin: 26px 0;
+}
+.figure img { border-radius: 8px; margin-inline: auto; }
+.figure figcaption {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 12px;
+  padding-inline: 6px;
+}
+.figure figcaption strong { color: var(--ink); }
+
+/* Action-space / prompt code block */
+.code-block {
+  background: var(--code-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 26px 0;
+}
+.code-block .code-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(219, 228, 247, 0.14);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8fa4cf;
+}
+.code-block pre {
+  margin: 0;
+  padding: 20px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--code-ink);
+}
+.code-block .tk { color: #f2a48d; }
+.code-block .tv { color: #9fc1f5; }
+.code-block .tc { color: #7d92bd; }
+
+/* Analysis stat tiles */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 22px 0 6px;
+}
+.tile {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 12px 12px;
+  text-align: center;
+}
+.tile .t-val {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--indigo);
+}
+.tile .t-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.tile .t-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.tile.warm .t-val { color: #c05a39; }
+
+/* Split layout: chart + big-number callout (efficiency section) */
+.split-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 860px) { .split-grid { grid-template-columns: 1fr; } }
+
+.callout {
+  background: linear-gradient(160deg, var(--indigo), var(--indigo-bright));
+  color: #e8effc;
+  border-radius: var(--radius);
+  padding: 30px 28px;
+}
+.callout .big {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 1;
+  color: #fff;
+}
+.callout .big small { font-size: 22px; font-weight: 600; }
+.callout .cap {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.callout p { font-size: 14.5px; margin: 12px 0 0; opacity: 0.94; }
+
+/* Limitations — the report is candid; the page is too. */
+.limits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 860px) { .limits { grid-template-columns: 1fr; } }
+.limit {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--mask);
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.limit b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--ink);
+  margin-bottom: 5px;
+}
+
+/* --------------------------------------------------------------------------
+   BibTeX
+   -------------------------------------------------------------------------- */
+
+.bibtex-card {
+  position: relative;
+  background: var(--code-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.bibtex-card pre {
+  margin: 0;
+  padding: 26px 28px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--code-ink);
+}
+.copy-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--code-ink);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.copy-btn:hover { background: rgba(255, 255, 255, 0.16); }

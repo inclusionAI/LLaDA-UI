@@ -1,0 +1,31 @@
+<div class="table-card">
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>ScreenSpot-V2</th>
+          <th>ScreenSpot-Pro</th>
+          <th>AndroidWorld</th>
+          <th>MobileWorld</th>
+          <th>OSWorld-Verified</th>
+          <th>WebVoyager</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="group" colspan="7">Autoregressive VLMs</td></tr>
+        <tr><td>Qwen2.5-VL-7B</td><td>86.0</td><td>26.8</td><td>25.5</td><td>&lt;7.0</td><td>&lt;3.0</td><td>&lt;11.0</td></tr>
+        <tr><td>Qwen3-VL-8B</td><td>93.0</td><td>52.7</td><td>47.9</td><td>9.4</td><td>33.9</td><td>45.2</td></tr>
+        <tr><td>Qwen3.5-9B</td><td><span class="best">94.0</span></td><td><span class="best">65.2</span></td><td><span class="best">57.8</span></td><td>17.9</td><td><span class="best">41.8</span></td><td>46.6</td></tr>
+        <tr><td class="group" colspan="7">Block-wise diffusion (ours)</td></tr>
+        <tr class="ours"><td>LLaDA-UI</td><td>90.7</td><td>53.7</td><td>51.2</td><td><span class="best">20.0</span></td><td>15.0</td><td><span class="best">55.9</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-foot">
+    ScreenSpot-V2 and ScreenSpot-Pro report point-in-box grounding accuracy; the remaining benchmarks report
+    end-to-end task success in executable environments. All agents receive the same task, screenshot
+    observation, interaction history, action space, environment feedback, and action budget whenever
+    supported. Qwen2.5-VL-7B values written as &lt;x are reported upper bounds. Best per column in bold.
+  </div>
+</div>

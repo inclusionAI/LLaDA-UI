@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLaDA-UI — An MoE-based Diffusion Vision–Language GUI Agent</title>
+  <meta name="description" content="LLaDA-UI is a 16.7B-parameter MoE block-wise diffusion vision–language GUI agent with 1.4B activated parameters — the first practical open-source diffusion GUI agent, by Inclusion AI, the Venus Team at Ant Group, and Westlake University.">
+  <link rel="icon" type="image/png" href="static/images/favicon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="LLaDA-UI — An MoE-based Diffusion Vision–Language GUI Agent">
+  <meta property="og:description" content="Block-parallel decoding, bidirectional context, executable GUI actions: diffusion language models as practical multimodal GUI agents, with up to 8.95× lower non-cached API latency.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="static/images/framework.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/base.css">
+  <link rel="stylesheet" href="static/css/layout.css">
+  <link rel="stylesheet" href="static/css/components.css">
+  <link rel="stylesheet" href="static/css/charts.css">
+  <link rel="stylesheet" href="static/css/player.css">
+</head>
+<body>
+
+  <!-- ======================= Navigation ======================= -->
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <!-- Dissolving mask-token mark, from the report's own LLaDA-UI glyph -->
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="2" y="16" width="14" height="14" rx="2.5" fill="#2a4b8c"/>
+          <rect x="18" y="11" width="8" height="8" rx="1.6" fill="#5e83b5"/>
+          <rect x="21" y="3" width="5.5" height="5.5" rx="1.2" fill="#5e83b5" opacity="0.85"/>
+          <rect x="28" y="13" width="3.5" height="3.5" rx="1" fill="#e07a5f"/>
+          <rect x="19" y="22" width="4.5" height="4.5" rx="1" fill="#5e83b5" opacity="0.7"/>
+          <rect x="27" y="24" width="3" height="3" rx="0.8" fill="#e07a5f" opacity="0.8"/>
+          <rect x="29" y="5" width="2.5" height="2.5" rx="0.7" fill="#5e83b5" opacity="0.55"/>
+        </svg>
+        <span>LLaDA-<span class="ui">UI</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#highlights">Highlights</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#training">Training</a>
+        <a href="#results">Results</a>
+        <a href="#traces">Traces</a>
+        <a href="#bibtex">BibTeX</a>
+      </div>
+      <!-- TODO: link the GitHub repository once public -->
+      <span class="nav-gh disabled" title="Repository coming soon">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+        GitHub <span class="tbd">SOON</span>
+      </span>
+    </div>
+  </nav>
+
+  <!-- ======================= Hero ======================= -->
+  <header class="hero" id="top">
+    <!-- floating mask tokens (signature glyph) -->
+    <span class="mtoken steel" style="width:16px;height:16px;top:15%;left:11%;animation-delay:0s" aria-hidden="true"></span>
+    <span class="mtoken indigo" style="width:10px;height:10px;top:34%;left:6%;animation-delay:1.4s" aria-hidden="true"></span>
+    <span class="mtoken warm" style="width:9px;height:9px;top:24%;left:17%;animation-delay:2.6s" aria-hidden="true"></span>
+    <span class="mtoken steel" style="width:12px;height:12px;top:18%;right:9%;animation-delay:0.8s" aria-hidden="true"></span>
+    <span class="mtoken indigo" style="width:18px;height:18px;top:44%;right:5%;animation-delay:2.2s" aria-hidden="true"></span>
+    <span class="mtoken warm" style="width:8px;height:8px;top:32%;right:15%;animation-delay:3.4s" aria-hidden="true"></span>
+    <span class="mtoken steel" style="width:9px;height:9px;top:64%;left:14%;animation-delay:3s" aria-hidden="true"></span>
+    <span class="mtoken steel" style="width:11px;height:11px;top:58%;right:13%;animation-delay:1.9s" aria-hidden="true"></span>
+
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Inclusion AI · Venus Team · Westlake University — Technical Report</span>
+      <h1 data-denoise="chars" data-delay="300" data-block-dur="1000">LLaDA-<span class="ui">UI</span></h1>
+      <p class="tagline" data-denoise="words" data-blocks="3" data-delay="500" data-block-dur="800">
+        An MoE-based <strong>block-wise diffusion</strong> vision&ndash;language GUI agent —
+        16.7B parameters, 1.4B activated. It perceives screens, reasons in tags, and emits
+        executable actions with <strong>block-parallel decoding</strong> across mobile, desktop, and web.
+      </p>
+
+      <p class="authors">
+        Zhangxuan Gu<sup>2*</sup>, Haoxing Chen<sup>1*</sup>, Qi Qin<sup>1*</sup>, Yi Xin<sup>1*</sup>,
+        Kai Gan<sup>1</sup>, Lin Liu<sup>1</sup>, Long Cui<sup>1</sup>, Xiaomei Wang<sup>1</sup>,
+        Beitong Zhou<sup>2</sup>, Yunzhu Zhang<sup>2</sup>, Zhengwen Zeng<sup>2</sup>,
+        Changlong Gao<sup>2</sup>, Weizhi Chen<sup>2</sup>, Rongchao Zhang<sup>2</sup>,
+        Shuheng Shen<sup>2</sup>, Changhua Meng<sup>2</sup>, Weiqiang Wang<sup>2&dagger;</sup>,
+        Jianguo Li<sup>1&dagger;</sup>, Zhenzhong Lan<sup>1,3&dagger;</sup>
+      </p>
+      <p class="affils"><sup>1</sup>Inclusion AI &nbsp;·&nbsp; <sup>2</sup>Venus Team, Ant Group &nbsp;·&nbsp; <sup>3</sup>Westlake University</p>
+      <p class="author-note">* co-first authors &nbsp;·&nbsp; &dagger; technical leads</p>
+
+      <div class="hero-actions">
+        <!-- TODO: replace with the arXiv link once the report is public -->
+        <span class="btn btn-disabled" title="The technical report will be released soon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          Paper <span class="tbd">SOON</span>
+        </span>
+        <!-- TODO: link the GitHub repository once public -->
+        <span class="btn btn-disabled" title="Code will be released soon">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+          Code <span class="tbd">SOON</span>
+        </span>
+        <!-- TODO: link the Hugging Face model once public -->
+        <span class="btn btn-disabled" title="Model weights will be released soon">
+          <span aria-hidden="true">🤗</span> Model <span class="tbd">SOON</span>
+        </span>
+      </div>
+
+      <div class="hero-chips">
+        <span class="chip">LLaDA2.0-mini-base backbone</span>
+        <span class="chip">16.7B MoE · 1.4B activated</span>
+        <span class="chip">Mobile · Desktop · Web · Grounding</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="label">ScreenSpot-V2</div>
+          <div class="value">90.7</div>
+          <div class="note">grounding accuracy</div>
+        </div>
+        <div class="stat">
+          <div class="label">ScreenSpot-Pro</div>
+          <div class="value">53.7</div>
+          <div class="note">grounding · Qwen3-VL-8B: 52.7</div>
+        </div>
+        <div class="stat">
+          <div class="label">AndroidWorld</div>
+          <div class="value">51.2</div>
+          <div class="note">mobile · Qwen3-VL-8B: 47.9</div>
+        </div>
+        <div class="stat">
+          <div class="label">WebVoyager</div>
+          <div class="value">55.9</div>
+          <div class="note">web · best reported here</div>
+        </div>
+        <div class="stat highlight">
+          <div class="label">API speedup</div>
+          <div class="value">8.95×</div>
+          <div class="note">max mean speedup vs Qwen3-VL-8B</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ======================= Denoising showcase ======================= -->
+    <section class="section" id="denoising">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">See it decode</span>
+          <h2>Watch a real prediction denoise</h2>
+          <p class="lede">
+            One verbatim AndroidWorld call, replayed frame by frame. The response starts as
+            <span class="mask-chip">&lt;|mask|&gt;</span> tokens and resolves block by block into tagged
+            reasoning and one executable action — nothing is cropped or edited.
+          </p>
+        </div>
+
+        <div class="denoise-grid" data-reveal>
+          <div class="denoise-obs">
+            <img src="static/images/case10-input.png" alt="Static Android screenshot: a file manager showing the Podcasts folder with holiday_photos.jpg" loading="lazy">
+            <div class="obs-label">Static GUI observation</div>
+          </div>
+          <div class="denoise-main">
+            <div class="denoise-task">
+              <span class="task-tag">Task</span>
+              Move <code>holiday_photos.jpg</code> from <code>Podcasts</code> to <code>DCIM</code> in the
+              same Android storage area.
+            </div>
+            <div class="player" data-player
+                 data-pattern="static/images/denoise/frame-{i}.png"
+                 data-frames="75" data-fps="3" data-autoplay="1"
+                 data-label="Denoising sequence">
+            </div>
+            <p class="player-foot">
+              Every frame is the recorded model state at one denoising step — reasoning, action tags, and
+              special tokens included. The final frame emits
+              <code>&lt;action&gt;LongPress(box=(x,y))&lt;/action&gt;</code>-style executable output.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= Overview ======================= -->
+    <section class="section" id="overview">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Overview</span>
+          <h2>Diffusion language models, put to work on screens</h2>
+          <p class="lede">
+            GUI agents must repeatedly perceive screen states and emit structured, spatially grounded
+            actions in real time — a natural testbed for diffusion LLMs, whose block-parallel,
+            arbitrary-order generation promises low latency. LLaDA-UI answers the open question of whether
+            that promise survives contact with interactive screens: it <strong>substantially outperforms
+            Qwen2.5-VL-7B and surpasses the similarly scaled Qwen3-VL-8B on most reported GUI
+            benchmarks</strong>, while keeping the parallel-decoding advantage.
+          </p>
+        </div>
+
+        <div class="radar-grid" data-reveal>
+          <div class="radar-card">
+            <div id="radar-host"></div>
+            <div class="radar-legend">
+              <span><i style="background:#2a4b8c"></i>LLaDA-UI</span>
+              <span><i style="background:#e07a5f"></i>Qwen3-VL-8B</span>
+              <span><i style="background:#8a94a6"></i>Qwen3.5-9B</span>
+              <span><i style="background:#3d9a8b"></i>Qwen2.5-VL-7B</span>
+            </div>
+            <p class="radar-foot">
+              Each axis is normalized to the best displayed raw score (printed under the axis name).
+              Qwen2.5-VL-7B's MobileWorld, OSWorld-V, and WebVoyager values are reported upper bounds.
+            </p>
+          </div>
+          <div class="overview-points">
+            <div class="trick">
+              <b>Parallel where it counts</b>
+              Block-wise masked diffusion refines many tokens of the current block per step, and
+              Self-Paced Unmasking commits several high-confidence tokens at once — short, structured
+              action outputs are exactly the regime where this pays off.
+            </div>
+            <div class="trick">
+              <b>Bidirectional context</b>
+              Masked reconstruction conditions on both directions inside a block, so the
+              <code style="white-space:nowrap">&lt;think&gt;&lt;action&gt;</code> scaffolding can firm up
+              before every word is decided — visible live in the replay above.
+            </div>
+            <div class="trick">
+              <b>Structured output that parses</b>
+              Across 1,849 AndroidWorld steps: 98.65% of responses parse, 98.59% satisfy the action
+              schema, and all 1,457 coordinate-bearing actions stay in the valid range.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= Highlights ======================= -->
+    <section class="section" id="highlights">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Highlights</span>
+          <h2>What the report establishes</h2>
+          <p class="lede">
+            Four results that together make block-wise diffusion a practical generative paradigm for
+            multimodal GUI agents.
+          </p>
+        </div>
+
+        <div class="cards">
+          <div class="card" data-reveal>
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="9" width="5" height="5" rx="1"/><rect x="16" y="3" width="3.5" height="3.5" rx="0.8"/><path d="M20.5 12.5h.01M14.5 17.5h.01"/></svg>
+            </div>
+            <h3>The first practical diffusion GUI agent</h3>
+            <p>
+              Prior diffusion VLMs stopped at static understanding or single-step grounding. LLaDA-UI is the
+              first <strong>open-source diffusion vision&ndash;language agent</strong> that repeatedly perceives
+              changing screens, produces executable actions, and completes long-horizon tasks in dynamic
+              environments like AndroidWorld, MobileWorld, OSWorld, and WebVoyager.
+            </p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z"/></svg>
+            </div>
+            <h3>Block-parallel decoding, measured</h3>
+            <p>
+              In a controlled paired evaluation with identical serving hardware and no cache hits, LLaDA-UI
+              answers in <strong>4.8&ndash;6.4 s where Qwen3-VL-8B needs 17&ndash;53 s</strong> —
+              3.58× / 6.83× / 8.95× mean speedups on web, desktop, and mobile inputs, while generating
+              <em>more</em> tokens per call.
+            </p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18" opacity="0.35"/><path d="M3 6h8M3 12h13M3 18h18"/></svg>
+            </div>
+            <h3>A deliberately simple two-stage recipe</h3>
+            <p>
+              <strong>145B tokens</strong> of general multimodal pre-training align a native-resolution SigLIP
+              ViT with the LLaDA2.0-mini-base diffusion backbone — competitive with VLMs trained on
+              trillions — then GUI-agent SFT on <strong>6M+ samples</strong> from the UI-Venus project adds
+              executable behavior across mobile, desktop, web, and grounding.
+            </p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M12 6l7 3.5v2C19 15 16 17.5 12 18c-4-.5-7-3-7-6.5v-2L12 6z"/></svg>
+            </div>
+            <h3>Trained for the non-AR regime</h3>
+            <p>
+              A unified action space interleaves chain-of-thought with actions in normalized screen
+              coordinates, adapting the non-autoregressive backbone to interactive control. A
+              <strong>mask-token reweighting</strong> scheme balances gradients across wildly varying response
+              lengths, and complementary masking guarantees every target token is both observed and predicted.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= Architecture ======================= -->
+    <section class="section" id="architecture">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Architecture</span>
+          <h2>Three components, one denoising decoder</h2>
+          <p class="lede">
+            GUI observations from web, mobile, and desktop environments are encoded at native resolution and
+            interleaved with task and interaction-history tokens; the block-wise diffusion decoder
+            progressively denoises masked output positions into structured reasoning and executable actions.
+          </p>
+        </div>
+
+        <figure class="figure" data-reveal>
+          <img src="static/images/framework.png" alt="The LLaDA-UI framework: multi-resolution GUI observations from web, mobile, and desktop pass through a native-resolution vision encoder into the LLaDA 2.0 block-wise diffusion LM decoder, which denoises mask tokens into tagged reasoning and executable actions." loading="lazy">
+          <figcaption>
+            <strong>The framework of LLaDA-UI.</strong> Native-resolution screenshots of any aspect ratio
+            (a 1024&times;768 web trajectory, a 1080&times;2400 phone screen, a 1920&times;1080 desktop) are
+            tokenized by the vision encoder and consumed alongside instruction and history tokens; masked
+            output blocks are refined in parallel into <code>&lt;think&gt;&hellip;&lt;/think&gt;
+            &lt;action&gt;&hellip;&lt;/action&gt;</code> responses.
+          </figcaption>
+        </figure>
+
+        <div class="arch-cards" data-reveal>
+          <div class="arch-card">
+            <span class="arch-tag">Backbone</span>
+            <h3>Diffusion language model</h3>
+            <p>
+              LLaDA2.0-mini-base — an MoE diffusion LLM in the Ling2.0 lineage. Block-wise masked diffusion
+              lets multiple tokens within the current block be refined in parallel instead of one at a time.
+            </p>
+            <span class="arch-spec">MoE · 16.7B total · 1.4B activated</span>
+          </div>
+          <div class="arch-card">
+            <span class="arch-tag">Perception</span>
+            <h3>Vision encoder</h3>
+            <p>
+              A SigLIP-initialized ViT that ingests screenshots at native resolution and uses 2D rotary
+              positional embeddings to capture the spatial layout that grounding decisions depend on.
+            </p>
+            <span class="arch-spec">native resolution · 2D RoPE</span>
+          </div>
+          <div class="arch-card">
+            <span class="arch-tag">Bridge</span>
+            <h3>Vision&ndash;language projector</h3>
+            <p>
+              Groups every four spatially adjacent visual features, then projects them through a two-layer
+              MLP into the LLM embedding space — compressing long screenshot token sequences without losing
+              the layout signal.
+            </p>
+            <span class="arch-spec">4&times; spatial merge · 2-layer MLP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= Training ======================= -->
+    <section class="section" id="training">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Training</span>
+          <h2>Align first, then act</h2>
+          <p class="lede">
+            The vision encoder and the diffusion backbone are pre-trained independently, so stage one aligns
+            their representation spaces on general multimodal data (145B tokens, three-phase curriculum);
+            stage two teaches executable screen behavior with GUI-agent supervised fine-tuning.
+          </p>
+        </div>
+
+        <div class="stages" data-reveal>
+          <div class="stage">
+            <span class="stage-no">S0 · Alignment</span>
+            <h3>Vision&ndash;language alignment</h3>
+            <p>
+              High-quality image&ndash;caption pairs and visual knowledge collections teach the ViT to produce
+              representations the language model can use — alignment before any full-parameter training.
+            </p>
+            <ul class="stage-facts">
+              <li>5B tokens · 16K sequence</li>
+              <li>trains the projector only</li>
+            </ul>
+          </div>
+          <div class="stage">
+            <span class="stage-no">S1 · Perception</span>
+            <h3>Perception enhancement</h3>
+            <p>
+              All components unfreeze for joint end-to-end training on OCR, grounding, counting, interleaved
+              image&ndash;text, and pure text that preserves the backbone's language ability.
+            </p>
+            <ul class="stage-facts">
+              <li>70B tokens · 16K sequence</li>
+              <li>all parameters trainable</li>
+            </ul>
+          </div>
+          <div class="stage">
+            <span class="stage-no">S2 · Knowledge</span>
+            <h3>Multi-task pre-training</h3>
+            <p>
+              Reasoning-intensive data lands last: multimodal VQA, multimodal mathematics, and agent-based
+              tasks that build the deeper vision&ndash;language connections GUI work requires.
+            </p>
+            <ul class="stage-facts">
+              <li>70B tokens · 16K sequence</li>
+              <li>all parameters trainable</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cards" data-reveal>
+          <div class="card">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18.5h4"/></svg>
+            </div>
+            <h3>GUI-agent SFT: the data</h3>
+            <p>
+              <strong>6M+ samples</strong> accumulated through the UI-Venus project: ~2M grounding, 2M+ mobile,
+              ~1M desktop, and ~1M web examples. Mobile navigation alone spans <strong>100+ Chinese and 70+
+              English apps</strong>, with single-turn and history-aware instances exposing both local operations
+              and multi-step context.
+            </p>
+          </div>
+          <div class="card">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20c2-6 5-9 8-9s6 3 8 9"/><path d="M12 11V4M9 6.5 12 4l3 2.5"/></svg>
+            </div>
+            <h3>GUI-agent SFT: the recipe</h3>
+            <p>
+              Initialized from the multimodal foundation and fine-tuned end to end for <strong>three epochs at
+              peak LR 1&times;10<sup>&minus;5</sup></strong> (cosine decay, 3% warmup), 16K max sequence length,
+              ~12.8M max image pixels, on 32&ndash;64 H100 GPUs — retaining the block diffusion objective and
+              MoE balancing from pre-training.
+            </p>
+          </div>
+        </div>
+
+        <figure class="figure" data-reveal>
+          <img src="static/images/data-pipeline.png" alt="The GUI data-generation pipeline: source collection, task seed pool, capability construction, and task generation feed a multi-domain task pool executed on mobile (ADB), web (Playwright), and desktop (VM/PyAutoGUI) environments, producing filtered GUI trajectories." loading="lazy">
+          <figcaption>
+            <strong>The GUI data-generation pipeline.</strong> Task posing is followed by sub-capability
+            decomposition, capability composition, execution in instrumented mobile, desktop, and web
+            environments, and validation into training trajectories.
+          </figcaption>
+        </figure>
+
+        <div class="code-block" data-reveal>
+          <div class="code-head">Unified action space — navigation targets are tagged, grounding returns a point</div>
+          <pre><span class="tk">&lt;think&gt;</span> visible reasoning over the task, history, and current screen <span class="tk">&lt;/think&gt;</span>
+<span class="tk">&lt;action&gt;</span><span class="tv">Click(box=(x,y))</span><span class="tk">&lt;/action&gt;</span>
+
+<span class="tc">// available actions (mobile shown; desktop and web analogous)</span>
+Click · DoubleClick · LongPress · Drag · Swipe · Type(content='')
+LaunchApp(app='') · Wait() · CallUser(content='') · GetScreenshot()
+PressBack() · PressHome() · PressEnter() · PressRecent()
+Answer(content='') · Finished(content='')
+
+<span class="tc">// all coordinates normalized to (0,0)–(999,999)</span>
+<span class="tc">// grounding answers directly: [x,y], or [-1,-1] if infeasible</span></pre>
+        </div>
+
+        <div class="tricks" data-reveal>
+          <div class="trick">
+            <b>Block diffusion objective</b>
+            Cross-entropy on masked positions with the diffusion-derived time weight, block by block —
+            the same loss carries from pre-training through SFT.
+          </div>
+          <div class="trick">
+            <b>Mask-token reweighting</b>
+            Inverse square-root weighting over active masked targets, so long responses can't drown out
+            short ones (and vice versa) in the gradient.
+          </div>
+          <div class="trick">
+            <b>Complementary masking</b>
+            Each target yields two corrupted views with inverse masks: every token is observed once and
+            predicted once, cutting token-level sampling bias.
+          </div>
+          <div class="trick">
+            <b>Auxiliary-loss-free MoE balancing</b>
+            RMS-normalized bias updates and scaled routing gates keep expert load uniform without an
+            auxiliary loss term — stable routing at 16.7B total parameters.
+          </div>
+          <div class="trick">
+            <b>Self-Paced Unmasking (SPU)</b>
+            Instead of a fixed number of commits per denoising step, SPU adaptively unmasks all positions
+            whose confidence clears a tolerance — fewer forward passes, same output.
+          </div>
+          <div class="trick">
+            <b>Training stack</b>
+            Implemented with dFactory on VeOmni: distributed multimodal loading, native-resolution
+            processing, boundary-preserving sequence packing, and MoE training.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= Results ======================= -->
+    <section class="section" id="results">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Results</span>
+          <h2>Benchmark results</h2>
+          <p class="lede">
+            Grounding and navigation after GUI-agent SFT, the multimodal foundation before it, paired
+            latency, and the failure analysis — every number from the technical report, with full
+            comparison tables under each chart group.
+          </p>
+        </div>
+
+        <div data-reveal>
+          <div class="chart-legend" aria-hidden="true">
+            <span><i class="sw sw-ours"></i>LLaDA-UI (diffusion MoE)</span>
+            <span><i class="sw sw-diff"></i>Other diffusion models</span>
+            <span><i class="sw sw-base"></i>Autoregressive models</span>
+            <span><i class="sw sw-bound"></i>Reported upper bound</span>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Result groups">
+            <button class="tab-btn" role="tab" id="tab-agent" aria-controls="panel-agent" aria-selected="true">Grounding &amp; Navigation</button>
+            <button class="tab-btn" role="tab" id="tab-foundation" aria-controls="panel-foundation" aria-selected="false">Multimodal Foundation</button>
+            <button class="tab-btn" role="tab" id="tab-efficiency" aria-controls="panel-efficiency" aria-selected="false">Efficiency</button>
+            <button class="tab-btn" role="tab" id="tab-analysis" aria-controls="panel-analysis" aria-selected="false">Analysis</button>
+          </div>
+
+          <!-- ---------- GUI agent ---------- -->
+          <div class="panel" id="panel-agent" role="tabpanel" aria-labelledby="tab-agent">
+            <p class="panel-note">
+              Static grounding (point-in-box accuracy) and end-to-end navigation success in executable
+              environments. LLaDA-UI exceeds Qwen2.5-VL-7B on every reported benchmark and is stronger than
+              Qwen3-VL-8B on ScreenSpot-Pro, AndroidWorld, MobileWorld, and WebVoyager; ScreenSpot-V2 is
+              close and OSWorld-Verified remains the main gap.
+            </p>
+            <div class="chart-grid" data-charts="agent"></div>
+            <details class="full-table" data-src="partials/tables/agent.html">
+              <summary>Full comparison table — Grounding &amp; Navigation</summary>
+            </details>
+          </div>
+
+          <!-- ---------- Foundation ---------- -->
+          <div class="panel" id="panel-foundation" role="tabpanel" aria-labelledby="tab-foundation" hidden>
+            <p class="panel-note">
+              The foundation checkpoint before GUI-agent SFT, trained on just 145B multimodal tokens
+              (Qwen2.5-VL: 4.1T; Qwen3-VL: 2.2T), sets a new state of the art among diffusion MLLMs —
+              e.g. +12.8 / +13.6 / +31.1 points over SDAR-VL-8B on MathVista, MathVision, and MathVerse.
+              Six representative benchmarks below; all 31 in the full table.
+            </p>
+            <div class="chart-grid" data-charts="foundation"></div>
+            <details class="full-table" data-src="partials/tables/foundation.html">
+              <summary>Full comparison table — General multimodal &amp; text (31 benchmarks)</summary>
+            </details>
+          </div>
+
+          <!-- ---------- Efficiency ---------- -->
+          <div class="panel" id="panel-efficiency" role="tabpanel" aria-labelledby="tab-efficiency" hidden>
+            <p class="panel-note">
+              Paired non-cached API latency against Qwen3-VL-8B: both models on four H100 GPUs, 2,048-token
+              generation cap, normal EOS stopping, model wall-clock time only, five non-cache-hit calls per
+              domain. LLaDA-UI generates more tokens per call and still answers several times sooner.
+            </p>
+            <div class="chart-grid" data-charts="efficiency"></div>
+            <div class="split-grid" style="margin-top:16px">
+              <div class="callout">
+                <span class="cap">Mean speedup on mobile inputs</span>
+                <div class="big"><span class="count-up" data-target="8.95">8.95</span><small>×</small></div>
+                <p>
+                  5.9 s versus 53.0 s mean latency per MobileWorld-style call. Median speedups across web,
+                  desktop, and mobile: 3.43×, 6.78×, and 8.81×.
+                </p>
+              </div>
+              <p class="section-footnote" style="margin:0">
+                Qwen3-VL-8B also has an exact-replay cache-hit mode (0.89&ndash;1.79 s) that the evaluated
+                LLaDA-UI SGLang stack does not expose; it is reported separately in the paper because normal
+                GUI interaction produces a new screenshot at every step, so exact replays do not occur. These
+                fixed-input measurements characterize per-call latency rather than serving throughput.
+              </p>
+            </div>
+          </div>
+
+          <!-- ---------- Analysis ---------- -->
+          <div class="panel" id="panel-analysis" role="tabpanel" aria-labelledby="tab-analysis" hidden>
+            <p class="panel-note">
+              A complete 116-task AndroidWorld evaluation (1,849 model steps) shows the model reliably obeys
+              the structured format — failures come from long-horizon recovery and high-resolution grounding,
+              not malformed output.
+            </p>
+
+            <div class="tiles">
+              <div class="tile">
+                <div class="t-val">51.72%</div>
+                <div class="t-label">Task success</div>
+                <div class="t-sub">60 / 116 tasks</div>
+              </div>
+              <div class="tile">
+                <div class="t-val">98.65%</div>
+                <div class="t-label">Parse rate</div>
+                <div class="t-sub">1,824 / 1,849 steps</div>
+              </div>
+              <div class="tile">
+                <div class="t-val">98.59%</div>
+                <div class="t-label">Schema-valid</div>
+                <div class="t-sub">1,823 / 1,849 steps</div>
+              </div>
+              <div class="tile">
+                <div class="t-val">100%</div>
+                <div class="t-label">Coordinates in range</div>
+                <div class="t-sub">1,457 / 1,457 actions</div>
+              </div>
+              <div class="tile warm">
+                <div class="t-val">18.82%</div>
+                <div class="t-label">Exact repetition</div>
+                <div class="t-sub">348 / 1,849 steps</div>
+              </div>
+              <div class="tile">
+                <div class="t-val">1.30%</div>
+                <div class="t-label">Multiple actions</div>
+                <div class="t-sub">main residual format error</div>
+              </div>
+            </div>
+
+            <div class="chart-grid" data-charts="analysis" style="margin-top:16px"></div>
+
+            <h3 style="font-family:var(--font-display);font-weight:600;font-size:19px;margin:34px 0 10px">
+              Decoding ablation — AndroidWorld, intermediate checkpoint
+            </h3>
+            <div class="table-card">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Decode setting</th>
+                      <th>EOS policy</th>
+                      <th>Block</th>
+                      <th>Steps</th>
+                      <th>Success</th>
+                      <th>Avg. actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Baseline</td><td>Early stop</td><td>32</td><td>32</td><td>42.7% (50/116)</td><td>14.9</td></tr>
+                    <tr><td>Two-stage decoding</td><td>Early stop</td><td>32</td><td>32</td><td>50.9% (58/115)</td><td>13.7</td></tr>
+                    <tr class="ours"><td>No-EOS</td><td>Disabled</td><td>32</td><td>32</td><td><span class="best">52.6% (61/116)</span></td><td>15.8</td></tr>
+                    <tr><td>Larger block / fewer steps</td><td>Default</td><td>64</td><td>16</td><td>33.0% (38/115)</td><td>15.1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-foot">
+                Task split, prompt, action parser, and maximum environment steps held fixed. Disabling EOS
+                early stopping gains +9.9 points — premature termination can interrupt a parseable action —
+                while coarsening blocks and cutting refinement rounds (64 / 16) loses 9.7 points: interactive
+                reliability is sensitive to the block-size / denoising-steps trade-off.
+              </div>
+            </div>
+
+            <p class="section-footnote">
+              Where the failures live: exact repetition rises from 5.41% of steps in successful trajectories
+              to 26.70% in failed ones, and success drops from 62.96% on tasks needing at most five optimal
+              actions to 14.29% beyond twenty. On OSWorld a different bottleneck dominates — much larger
+              screenshots with smaller targets expose insufficient high-resolution perception and inaccurate
+              pointing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= Agent traces ======================= -->
+    <section class="section" id="traces">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Cross-platform traces</span>
+          <h2>Three complete, successful trajectories</h2>
+          <p class="lede">
+            Recorded end to end on WebVoyager, OSWorld, and MobileWorld. Every frame pairs the current GUI
+            observation with the model's verbatim <code>&lt;think&gt;</code> and <code>&lt;action&gt;</code>
+            output for that step — step through them or let them play.
+          </p>
+        </div>
+
+        <div class="trace-block" data-reveal>
+          <div class="trace-intro">
+            <h3>Constrained flight search</h3>
+            <span class="trace-tag">WebVoyager · 20 steps</span>
+            <p>
+              Long-horizon constraint tracking on the live web: find the one-way Calgary&rarr;New York flight
+              on a fixed date with the lowest CO&#8322; emissions, keeping the constraint in mind across
+              twenty steps of forms, filters, and result lists.
+            </p>
+          </div>
+          <div class="player" data-player
+               data-pattern="static/images/traces/web/frame-{i}.png"
+               data-frames="20" data-fps="0.8" data-autoplay="1"
+               data-label="WebVoyager trajectory"></div>
+        </div>
+
+        <div class="trace-block" data-reveal>
+          <div class="trace-intro">
+            <h3>Calc table into Writer</h3>
+            <span class="trace-tag">OSWorld · 10 steps</span>
+            <p>
+              Formatted content transfer between desktop applications: copy a formatted LibreOffice Calc
+              table into Writer and save the resulting document.
+            </p>
+          </div>
+          <div class="player" data-player
+               data-pattern="static/images/traces/os/frame-{i}.png"
+               data-frames="10" data-fps="0.8" data-autoplay="1"
+               data-label="OSWorld trajectory"></div>
+        </div>
+
+        <div class="trace-block" data-reveal>
+          <div class="trace-intro">
+            <h3>Email to alarm</h3>
+            <span class="trace-tag">MobileWorld · 12 steps</span>
+            <p>
+              Cross-application information use on mobile: read an event time from an email, then set an
+              alarm one hour earlier in the clock app.
+            </p>
+          </div>
+          <div class="player" data-player
+               data-pattern="static/images/traces/mobile/frame-{i}.png"
+               data-frames="12" data-fps="0.8" data-autoplay="1"
+               data-label="MobileWorld trajectory"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= Conclusion & limitations ======================= -->
+    <section class="section" id="conclusion">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Takeaway &amp; limits</span>
+          <h2>A viable new direction — stated with its caveats</h2>
+          <p class="lede">
+            As the first practical open-source diffusion GUI agent, LLaDA-UI demonstrates that diffusion
+            language models offer a real alternative for vision&ndash;language agents. The report is equally
+            explicit about where it still falls short:
+          </p>
+        </div>
+
+        <div class="limits" data-reveal>
+          <div class="limit">
+            <b>Long-horizon loops</b>
+            The agent can repeat actions and get stuck in unproductive UI states on long tasks — a pattern
+            also common in GUI agents below the 100B-parameter scale.
+          </div>
+          <div class="limit">
+            <b>High-resolution perception</b>
+            Grounding degrades on very large screenshots with small targets, exposed most clearly by
+            OSWorld's desktop environments.
+          </div>
+          <div class="limit">
+            <b>Decoding sensitivity</b>
+            Small changes to block size and denoising steps can materially alter both task success and
+            latency; the settings need validation per deployment.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= BibTeX ======================= -->
+    <section class="section" id="bibtex">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Citation</span>
+          <h2>BibTeX</h2>
+          <p class="lede">If you find LLaDA-UI useful, please cite the technical report. <span class="tbd">TODO · arXiv ID</span></p>
+        </div>
+        <div class="bibtex-card" data-reveal>
+          <button class="copy-btn" id="copy-bibtex" type="button">Copy</button>
+<!-- TODO: update the arXiv identifier once the report is public -->
+<pre id="bibtex-text">@article{lladaui2026,
+  title   = {LLaDA-UI: An MoE-based Diffusion Vision-Language GUI Agent},
+  author  = {Gu, Zhangxuan and Chen, Haoxing and Qin, Qi and Xin, Yi and Gan, Kai and
+             Liu, Lin and Cui, Long and Wang, Xiaomei and Zhou, Beitong and Zhang, Yunzhu and
+             Zeng, Zhengwen and Gao, Changlong and Chen, Weizhi and Zhang, Rongchao and
+             Shen, Shuheng and Meng, Changhua and Wang, Weiqiang and Li, Jianguo and Lan, Zhenzhong},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
+}</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= Footer ======================= -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="#top">
+            <svg viewBox="0 0 32 32" aria-hidden="true" style="width:24px;height:24px">
+              <rect x="2" y="16" width="14" height="14" rx="2.5" fill="#2a4b8c"/>
+              <rect x="18" y="11" width="8" height="8" rx="1.6" fill="#5e83b5"/>
+              <rect x="21" y="3" width="5.5" height="5.5" rx="1.2" fill="#5e83b5" opacity="0.85"/>
+              <rect x="28" y="13" width="3.5" height="3.5" rx="1" fill="#e07a5f"/>
+              <rect x="19" y="22" width="4.5" height="4.5" rx="1" fill="#5e83b5" opacity="0.7"/>
+            </svg>
+            <span>LLaDA-<span class="ui">UI</span></span>
+          </a>
+          <p class="foot-note">
+            An MoE-based diffusion vision&ndash;language GUI agent by Inclusion AI, the Venus Team at
+            Ant Group, and Westlake University — establishing block-wise diffusion as a practical
+            generative paradigm for multimodal GUI agents.
+          </p>
+          <img class="corp-logo" src="static/images/inclusion-antgroup.png" alt="Ant Group and Inclusion AI logos" loading="lazy">
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <!-- TODO: link the report / repo / weights once public -->
+            <li>Technical report <span class="tbd">SOON</span></li>
+            <li>GitHub repository <span class="tbd">SOON</span></li>
+            <li>Hugging Face model <span class="tbd">SOON</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Related work</h4>
+          <ul>
+            <li><a href="https://arxiv.org/abs/2502.09992" target="_blank" rel="noopener">LLaDA</a></li>
+            <li><a href="https://arxiv.org/abs/2512.15745" target="_blank" rel="noopener">LLaDA2.0</a></li>
+            <li><a href="https://arxiv.org/abs/2505.16933" target="_blank" rel="noopener">LLaDA-V</a></li>
+            <li><a href="https://arxiv.org/abs/2604.20796" target="_blank" rel="noopener">LLaDA2.0-Uni</a></li>
+            <li><a href="https://arxiv.org/abs/2508.10833" target="_blank" rel="noopener">UI-Venus</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> Inclusion AI · Venus Team, Ant Group · Westlake University</span>
+        <span>▪ denoised, block by block</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="chart-tooltip" id="chart-tooltip" role="status" aria-hidden="true"></div>
+
+  <script src="static/js/results-data.js"></script>
+  <script src="static/js/charts.js"></script>
+  <script src="static/js/radar.js"></script>
+  <script src="static/js/player.js"></script>
+  <script src="static/js/main.js"></script>
+</body>
+</html>

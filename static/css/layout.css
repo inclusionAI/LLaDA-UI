@@ -1,0 +1,343 @@
+/* ==========================================================================
+   LLaDA-UI project page — layout.css
+   Page chrome: sticky navigation, hero (with the denoising headline and the
+   floating mask-token field), footer.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Top navigation
+   -------------------------------------------------------------------------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(247, 248, 252, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 60px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+}
+.brand:hover { text-decoration: none; }
+.brand svg { width: 26px; height: 26px; }
+.brand .ui { color: var(--indigo-bright); }
+
+.nav-links {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 7px 10px;
+  border-radius: 8px;
+}
+.nav-links a:hover {
+  color: var(--indigo);
+  background: var(--tint);
+  text-decoration: none;
+}
+
+.nav-gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 7px 14px;
+  white-space: nowrap;
+}
+.nav-gh:hover { border-color: var(--indigo-bright); text-decoration: none; }
+.nav-gh svg { width: 15px; height: 15px; }
+.nav-gh.disabled { color: var(--tbd-ink); border-style: dashed; cursor: default; }
+.nav-gh.disabled:hover { border-color: var(--tbd-line); }
+
+@media (max-width: 960px) {
+  .nav-links { display: none; }
+  .nav-gh { margin-left: auto; }
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 84px 0 60px;
+  background:
+    radial-gradient(52rem 30rem at 50% -8rem, var(--tint) 0%, rgba(236, 239, 250, 0) 68%),
+    radial-gradient(28rem 20rem at 90% 10rem, rgba(94, 131, 181, 0.16) 0%, rgba(94, 131, 181, 0) 70%),
+    radial-gradient(24rem 18rem at 8% 16rem, rgba(224, 122, 95, 0.10) 0%, rgba(224, 122, 95, 0) 70%);
+}
+
+.hero-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Floating mask tokens — the page's signature glyph. Small rounded squares
+   that pulse like unresolved [MASK] positions waiting to be committed. */
+.mtoken {
+  position: absolute;
+  border-radius: 3px;
+  opacity: 0.4;
+  pointer-events: none;
+  animation: dissolve 6s ease-in-out infinite;
+}
+.mtoken.steel { background: var(--steel); }
+.mtoken.indigo { background: var(--indigo-bright); }
+.mtoken.warm { background: var(--mask); }
+
+@keyframes dissolve {
+  0%, 100% { opacity: 0.14; transform: scale(0.82) rotate(0deg); }
+  50% { opacity: 0.5; transform: scale(1.05) rotate(4deg); }
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before, .eyebrow::after { content: "▪"; color: var(--mask); font-size: 9px; }
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 8vw, 5.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 16px 0 0;
+}
+.hero h1 .ui {
+  background: linear-gradient(120deg, var(--indigo-bright), var(--indigo));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero .tagline {
+  max-width: 760px;
+  font-size: 18.5px;
+  color: var(--muted);
+  margin: 20px auto 0;
+}
+.hero .tagline strong { color: var(--ink); font-weight: 600; }
+
+/* Denoising text: each token starts as an opaque mask block over its own
+   glyphs (no layout shift), then resolves. Driven by main.js. */
+[data-denoise] .dn {
+  border-radius: 3px;
+  transition: background-color 0.34s ease, color 0.34s ease;
+}
+[data-denoise] .dn.masked {
+  color: transparent !important;
+  background-color: var(--mask-soft);
+  box-shadow: inset 0 0 0 1px rgba(224, 122, 95, 0.4);
+}
+.hero h1 .dn.masked {
+  background-color: rgba(94, 131, 181, 0.32);
+  box-shadow: inset 0 0 0 1px rgba(42, 75, 140, 0.28);
+}
+
+.authors {
+  max-width: 860px;
+  margin: 22px auto 0;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--ink);
+}
+.authors sup { color: var(--indigo-bright); font-family: var(--font-mono); font-size: 10px; }
+.affils {
+  margin: 6px auto 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.affils sup { color: var(--indigo-bright); font-size: 9.5px; }
+.author-note {
+  margin: 4px auto 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn svg { width: 17px; height: 17px; }
+
+.btn-primary {
+  background: linear-gradient(120deg, var(--indigo-bright), var(--indigo));
+  color: #fff;
+  box-shadow: 0 10px 24px -10px rgba(42, 75, 140, 0.55);
+}
+.btn-primary:hover { box-shadow: 0 14px 28px -10px rgba(42, 75, 140, 0.6); }
+
+.btn-ghost {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn-ghost:hover { border-color: var(--indigo-bright); }
+
+.btn-disabled {
+  background: var(--tbd-bg);
+  color: var(--tbd-ink);
+  border: 1px dashed var(--tbd-line);
+  cursor: default;
+}
+.btn-disabled:hover { transform: none; }
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+.chip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--indigo);
+  background: var(--tint);
+  border: 1px solid rgba(62, 108, 196, 0.28);
+  border-radius: 999px;
+  padding: 5px 13px;
+}
+
+/* Headline stat strip */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 42px;
+  width: 100%;
+}
+.stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 14px 14px;
+  text-align: center;
+}
+.stat .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.stat .value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.15;
+  margin-top: 6px;
+  color: var(--indigo);
+}
+.stat .note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.stat.highlight {
+  border-color: rgba(224, 122, 95, 0.55);
+  box-shadow: 0 10px 30px -18px rgba(224, 122, 95, 0.5);
+}
+.stat.highlight .value { color: #c05a39; }
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+
+.footer {
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+  background: var(--tint);
+  padding: 48px 0 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 32px;
+}
+@media (max-width: 780px) { .footer-grid { grid-template-columns: 1fr; } }
+
+.footer .brand { font-size: 18px; }
+.footer .foot-note { color: var(--muted); font-size: 14px; max-width: 400px; margin-top: 12px; }
+.footer .corp-logo { max-width: 300px; margin-top: 18px; opacity: 0.9; }
+
+.footer h4 {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--indigo);
+  margin: 0 0 12px;
+}
+.footer ul { list-style: none; margin: 0; padding: 0; }
+.footer li { margin-bottom: 8px; font-size: 14.5px; }
+.footer li .tbd { margin-left: 6px; }
+
+.footer-bottom {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(42, 75, 140, 0.15);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}

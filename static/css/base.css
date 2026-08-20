@@ -1,0 +1,148 @@
+/* ==========================================================================
+   LLaDA-UI project page — base.css
+   Design tokens, reset, shared primitives.
+
+   Identity: block-wise masked diffusion. Palette taken from the technical
+   report itself — indigo #2A4B8C / steel #5E83B5 (the report's link colors)
+   plus a warm "mask token" accent #E07A5F (the report's radar orange, echoing
+   its AR-blue vs diffusion-warm table convention).
+   ========================================================================== */
+
+:root {
+  --paper: #f7f8fc;
+  --tint: #eceffa;
+  --card: #ffffff;
+  --ink: #141d31;
+  --muted: #58658a;
+  --line: #dce1ef;
+
+  --indigo: #2a4b8c;
+  --indigo-bright: #3e6cc4;
+  --steel: #5e83b5;
+  --mask: #e07a5f;
+  --mask-soft: #f9e7e0;
+
+  --tbd-ink: #6d7896;
+  --tbd-bg: #f1f3fa;
+  --tbd-line: #b0b9d2;
+  --code-bg: #16213c;
+  --code-ink: #dbe4f7;
+
+  --font-display: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius: 16px;
+  --shadow-soft: 0 10px 30px -18px rgba(42, 75, 140, 0.38);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--indigo-bright); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+:focus-visible {
+  outline: 2px solid var(--indigo-bright);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+[hidden] { display: none !important; }
+
+/* TBD chip — placeholder language for links pending release. */
+.tbd {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--tbd-ink);
+  background: var(--tbd-bg);
+  border: 1px dashed var(--tbd-line);
+  border-radius: 6px;
+  padding: 2px 9px;
+  vertical-align: middle;
+}
+
+/* Inline mask-token chip — used when the prose names the mechanism itself. */
+.mask-chip {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  font-weight: 500;
+  color: #b0532f;
+  background: var(--mask-soft);
+  border: 1px solid rgba(224, 122, 95, 0.45);
+  border-radius: 5px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Sections
+   -------------------------------------------------------------------------- */
+
+.section { padding: 76px 0 8px; }
+.section:last-of-type { padding-bottom: 72px; }
+
+.section-head { max-width: 800px; margin-bottom: 36px; }
+.section-head .eyebrow { font-size: 11.5px; }
+.section-head .eyebrow::after { content: none; }
+
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.4vw, 2.3rem);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 10px 0 0;
+}
+.section-head .lede {
+  color: var(--muted);
+  font-size: 16.5px;
+  margin: 14px 0 0;
+}
+.section-head .lede strong { color: var(--ink); font-weight: 600; }
+
+.section-footnote {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 16px 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal + motion preferences
+   -------------------------------------------------------------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-reveal].revealed { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .mtoken { animation: none; }
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .btn, .card { transition: none; }
+}
