@@ -13,29 +13,29 @@
  *   - note : optional footnote shown in the hover tooltip
  * Per-chart options: max (y-axis top), digits (label decimals, default 1),
  * suffix (appended to the label, e.g. " s"), foot (footnote line).
- * Numbers mirror the LLaDA-UI technical report exactly.
+ * Numbers mirror the final LLaDA-UI technical report exactly.
  * ──────────────────────────────────────────────────────────────────────────
  */
 (function () {
   "use strict";
 
   var OURS = function (v, extra) {
-    var b = { model: "LLaDA-UI", name: "LLaDA-UI", sub: "16.7B · 1.4B act.", org: "ours · diffusion MoE", value: v, kind: "ours" };
+    var b = { model: "LLaDA-UI", name: "LLaDA-UI", sub: "16.7B MoE", org: "ours · diffusion MoE", value: v, kind: "ours" };
     if (extra) Object.keys(extra).forEach(function (k) { b[k] = extra[k]; });
     return b;
   };
   var Q25 = function (v, extra) {
-    var b = { model: "Qwen2.5-VL-7B", name: "Qwen2.5-VL", sub: "7B", org: "Alibaba · AR", value: v, kind: "base" };
+    var b = { model: "Qwen2.5-VL-7B", name: "Qwen2.5-VL", sub: "7B", org: "autoregressive VLM", value: v, kind: "base" };
     if (extra) Object.keys(extra).forEach(function (k) { b[k] = extra[k]; });
     return b;
   };
   var Q3 = function (v, extra) {
-    var b = { model: "Qwen3-VL-8B", name: "Qwen3-VL", sub: "8B", org: "Alibaba · AR", value: v, kind: "base" };
+    var b = { model: "Qwen3-VL-8B", name: "Qwen3-VL", sub: "8B", org: "autoregressive VLM", value: v, kind: "base" };
     if (extra) Object.keys(extra).forEach(function (k) { b[k] = extra[k]; });
     return b;
   };
   var Q35 = function (v) {
-    return { model: "Qwen3.5-9B", name: "Qwen3.5", sub: "9B", org: "Alibaba · AR", value: v, kind: "base" };
+    return { model: "Qwen3.5-9B", name: "Qwen3.5", sub: "9B", org: "autoregressive VLM", value: v, kind: "base" };
   };
   var LLADAV = function (v) {
     return { model: "LLaDA-V-8B", name: "LLaDA-V", sub: "8B", org: "diffusion VLM", value: v, kind: "diff" };
@@ -43,8 +43,6 @@
   var SDAR = function (v) {
     return { model: "SDAR-VL-8B", name: "SDAR-VL", sub: "8B", org: "diffusion VLM", value: v, kind: "diff" };
   };
-
-  var UB = { bound: true, note: "reported only as an upper bound" };
 
   var CHARTS = {
     agent: [
@@ -54,24 +52,24 @@
       },
       {
         cat: "Grounding", title: "ScreenSpot-Pro", metric: "Point-in-box accuracy (%)", max: 80,
-        bars: [OURS(53.7), Q25(26.8), Q3(52.7), Q35(65.2)]
+        bars: [OURS(52.9), Q25(26.8), Q3(52.7), Q35(65.2)]
       },
       {
         cat: "Mobile", title: "AndroidWorld", metric: "Task success rate (%)", max: 80,
-        bars: [OURS(51.2), Q25(25.5), Q3(47.9), Q35(57.8)]
+        bars: [OURS(53.5), Q25(25.5), Q3(47.9), Q35(57.8)]
       },
       {
-        cat: "Mobile", title: "MobileWorld", metric: "Task success rate (%)", max: 25,
-        bars: [OURS(20.0), Q25(7.0, UB), Q3(9.4), Q35(17.9)]
+        cat: "Mobile", title: "MobileWorld", metric: "Task success rate (%)", max: 30,
+        bars: [OURS(25.6), Q25(7.0), Q3(9.4), Q35(17.9)]
       },
       {
         cat: "Desktop", title: "OSWorld-Verified", metric: "Task success rate (%)", max: 50,
         foot: "The main remaining gap: very large screenshots with small targets expose high-resolution perception limits (see Analysis).",
-        bars: [OURS(15.0), Q25(3.0, UB), Q3(33.9), Q35(41.8)]
+        bars: [OURS(29.39), Q25(3.0), Q3(33.9), Q35(41.8)]
       },
       {
         cat: "Web", title: "WebVoyager", metric: "Task success rate (%)", max: 70,
-        bars: [OURS(55.9), Q25(11.0, UB), Q3(45.2), Q35(46.6)]
+        bars: [OURS(56.9), Q25(11.0), Q3(45.2), Q35(46.6)]
       }
     ],
 
@@ -85,37 +83,37 @@
         bars: [OURS(70.5), LLADAV(59.7), SDAR(62.5), Q25(68.6), Q3(77.2)]
       },
       {
-        cat: "OCR & Document", title: "OCRBench", metric: "Score (of 1000)", max: 1000, digits: 0,
+        cat: "Reasoning", title: "MathVerse (mini)", metric: "Accuracy (%)", max: 80,
+        bars: [OURS(48.0), LLADAV(29.1), SDAR(36.6), Q25(49.2), Q3(62.1)]
+      },
+      {
+        cat: "OCR & Chart", title: "ChartQA", metric: "Accuracy (%)", max: 100,
+        bars: [OURS(84.8), LLADAV(82.7), SDAR(82.7), Q25(84.1), Q3(89.6)]
+      },
+      {
+        cat: "OCR & Chart", title: "CharXiv (DQ)", metric: "Accuracy (%)", max: 100,
+        bars: [OURS(72.2), LLADAV(47.0), SDAR(66.5), Q25(73.9), Q3(83.0)]
+      },
+      {
+        cat: "OCR & Chart", title: "OCRBench", metric: "Score", max: 1000, digits: 0,
         bars: [OURS(855), LLADAV(632), SDAR(726), Q25(842), Q3(896)]
-      },
-      {
-        cat: "OCR & Document", title: "DocVQA", metric: "Accuracy (%)", max: 100,
-        bars: [OURS(91.5), LLADAV(83.9), SDAR(88.3), Q25(94.9), Q3(96.1)]
-      },
-      {
-        cat: "Text-centric", title: "GSM8K", metric: "Accuracy (%)", max: 100,
-        bars: [OURS(88.9), LLADAV(73.0), SDAR(88.6), Q25(86.1), Q3(95.6)]
-      },
-      {
-        cat: "Text-centric", title: "HumanEval", metric: "pass@1 (%)", max: 100,
-        bars: [OURS(76.2), LLADAV(17.7), SDAR(54.3), Q25(66.5), Q3(92.7)]
       }
     ],
 
     efficiency: [
       {
-        cat: "Web input", title: "WebVoyager-style call", metric: "Mean API latency (s) · ↓ lower is better", max: 20, digits: 2, suffix: " s",
-        foot: "3.58× mean speedup (3.43× median) · LLaDA-UI generates 144 tokens vs 55 for Qwen3-VL-8B.",
+        cat: "Web input", title: "Web", metric: "Mean API latency (s) · ↓ lower is better", max: 20, digits: 2, suffix: " s",
+        foot: "3.58× mean speedup (3.43× median) · LLaDA-UI generates 144 tokens vs 55.2 for Qwen3-VL-8B.",
         bars: [OURS(4.764), Q3(17.050)]
       },
       {
-        cat: "Desktop input", title: "OSWorld-style call", metric: "Mean API latency (s) · ↓ lower is better", max: 50, digits: 2, suffix: " s",
+        cat: "Desktop input", title: "OSWorld", metric: "Mean API latency (s) · ↓ lower is better", max: 50, digits: 2, suffix: " s",
         foot: "6.83× mean speedup (6.78× median) · 129 vs 70 generated tokens.",
         bars: [OURS(6.379), Q3(43.545)]
       },
       {
-        cat: "Mobile input", title: "MobileWorld-style call", metric: "Mean API latency (s) · ↓ lower is better", max: 60, digits: 2, suffix: " s",
-        foot: "8.95× mean speedup (8.81× median) · 67 vs 65 generated tokens.",
+        cat: "Mobile input", title: "MobileWorld", metric: "Mean API latency (s) · ↓ lower is better", max: 60, digits: 2, suffix: " s",
+        foot: "8.95× mean speedup (8.81× median) · 67 vs 65.2 generated tokens.",
         bars: [OURS(5.921), Q3(53.000)]
       }
     ],
@@ -123,7 +121,7 @@
     analysis: [
       {
         cat: "AndroidWorld", title: "Success vs. optimal task length", metric: "Task success rate (%)", max: 80,
-        foot: "116-task evaluation · long trajectories degrade through repeated actions in unproductive UI states.",
+        foot: "116-task evaluation of an intermediate checkpoint · long trajectories degrade through repeated actions in unproductive UI states.",
         bars: [
           { model: "Tasks solvable in 1–5 optimal actions", name: "1–5", sub: "54 tasks", org: "34 successes", value: 62.96, kind: "ours" },
           { model: "Tasks solvable in 6–10 optimal actions", name: "6–10", sub: "35 tasks", org: "17 successes", value: 48.57, kind: "ours" },
@@ -133,7 +131,7 @@
       },
       {
         cat: "AndroidWorld", title: "Exact-repetition rate", metric: "Share of steps (%) · ↓ lower is better", max: 30,
-        foot: "Repetition separates outcomes: failed trajectories repeat an identical action five times more often.",
+        foot: "Repetition separates outcomes: failed trajectories repeat an identical action nearly five times more often.",
         bars: [
           { model: "Successful trajectories", name: "Successful", sub: "trajectories", org: "exact repeats", value: 5.41, kind: "ours" },
           { model: "Failed trajectories", name: "Failed", sub: "trajectories", org: "exact repeats", value: 26.7, kind: "diff" }

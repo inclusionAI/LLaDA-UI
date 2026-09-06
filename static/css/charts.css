@@ -76,7 +76,7 @@
 /* Chart cards */
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 16px;
 }
 .chart-card {
@@ -103,7 +103,7 @@
   font-size: 12px;
   color: var(--muted);
   text-align: right;
-  white-space: nowrap;
+  white-space: normal;
 }
 .chart-title {
   font-family: var(--font-display);
@@ -376,7 +376,7 @@ tr.ours td:first-child {
 }
 tr.dim td { color: var(--muted); }
 td .best { font-weight: 700; color: var(--indigo); }
-td .best-diff { font-weight: 700; color: #b0532f; }
+td .second { font-weight: 600; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(42, 75, 140, 0.55); }
 
 .table-foot {
   font-size: 12.5px;

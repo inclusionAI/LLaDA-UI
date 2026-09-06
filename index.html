@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LLaDA-UI — An MoE-based Diffusion Vision–Language GUI Agent</title>
-  <meta name="description" content="LLaDA-UI is a 16.7B-parameter MoE block-wise diffusion vision–language GUI agent with 1.4B activated parameters — the first practical open-source diffusion GUI agent, by Inclusion AI, the Venus Team at Ant Group, and Westlake University.">
+  <title>LLaDA-UI: Bringing Block-wise Diffusion to Vision-Language GUI Agents</title>
+  <meta name="description" content="LLaDA-UI is a 16.7B-parameter MoE-based, block-wise diffusion vision–language GUI agent — the first open-source diffusion GUI agent, surpassing Qwen3-VL-8B on four of six reported GUI benchmarks — by Inclusion AI, the Venus Team at Ant Group, and Westlake University.">
   <link rel="icon" type="image/png" href="static/images/favicon.png">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="LLaDA-UI — An MoE-based Diffusion Vision–Language GUI Agent">
-  <meta property="og:description" content="Block-parallel decoding, bidirectional context, executable GUI actions: diffusion language models as practical multimodal GUI agents, with up to 8.95× lower non-cached API latency.">
+  <meta property="og:title" content="LLaDA-UI: Bringing Block-wise Diffusion to Vision-Language GUI Agents">
+  <meta property="og:description" content="Block-parallel decoding, bidirectional context, executable GUI actions: diffusion language models as practical multimodal GUI agents, up to 8.95× faster than Qwen3-VL-8B by mean non-cached API latency.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="static/images/framework.png">
 
@@ -49,11 +49,10 @@
         <a href="#traces">Traces</a>
         <a href="#bibtex">BibTeX</a>
       </div>
-      <!-- TODO: link the GitHub repository once public -->
-      <span class="nav-gh disabled" title="Repository coming soon">
+      <a class="nav-gh" href="https://github.com/inclusionAI/LLaDA-UI" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
-        GitHub <span class="tbd">SOON</span>
-      </span>
+        GitHub
+      </a>
     </div>
   </nav>
 
@@ -73,8 +72,8 @@
       <span class="eyebrow">Inclusion AI · Venus Team · Westlake University — Technical Report</span>
       <h1 data-denoise="chars" data-delay="300" data-block-dur="1000">LLaDA-<span class="ui">UI</span></h1>
       <p class="tagline" data-denoise="words" data-blocks="3" data-delay="500" data-block-dur="800">
-        An MoE-based <strong>block-wise diffusion</strong> vision&ndash;language GUI agent —
-        16.7B parameters, 1.4B activated. It perceives screens, reasons in tags, and emits
+        Bringing <strong>block-wise diffusion</strong> to vision&ndash;language GUI agents: a
+        16.7B-parameter MoE diffusion model that perceives screens, reasons in tags, and emits
         executable actions with <strong>block-parallel decoding</strong> across mobile, desktop, and web.
       </p>
 
@@ -82,11 +81,11 @@
         Zhangxuan Gu<sup>2*</sup>, Haoxing Chen<sup>1*</sup>, Qi Qin<sup>1*</sup>, Yi Xin<sup>1*</sup>,
         Kai Gan<sup>1</sup>, Lin Liu<sup>1</sup>, Long Cui<sup>1</sup>, Xiaomei Wang<sup>1</sup>,
         Beitong Zhou<sup>2</sup>, Yunzhu Zhang<sup>2</sup>, Zhengwen Zeng<sup>2</sup>,
-        Changlong Gao<sup>2</sup>, Weizhi Chen<sup>2</sup>, Rongchao Zhang<sup>2</sup>,
+        Changlong Gao<sup>2</sup>, Weizhi Chen<sup>2</sup>, Rongchao Zhang<sup>2</sup>, Haoyuan Wu<sup>1</sup>,
         Shuheng Shen<sup>2</sup>, Changhua Meng<sup>2</sup>, Weiqiang Wang<sup>2&dagger;</sup>,
         Jianguo Li<sup>1&dagger;</sup>, Zhenzhong Lan<sup>1,3&dagger;</sup>
       </p>
-      <p class="affils"><sup>1</sup>Inclusion AI &nbsp;·&nbsp; <sup>2</sup>Venus Team, Ant Group &nbsp;·&nbsp; <sup>3</sup>Westlake University</p>
+      <p class="affils"><sup>1</sup>AGI Research Center, Inclusion AI &nbsp;·&nbsp; <sup>2</sup>Venus Team, Ant Group &nbsp;·&nbsp; <sup>3</sup>Westlake University</p>
       <p class="author-note">* co-first authors &nbsp;·&nbsp; &dagger; technical leads</p>
 
       <div class="hero-actions">
@@ -95,43 +94,41 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
           Paper <span class="tbd">SOON</span>
         </span>
-        <!-- TODO: link the GitHub repository once public -->
-        <span class="btn btn-disabled" title="Code will be released soon">
+        <a class="btn btn-primary" href="https://github.com/inclusionAI/LLaDA-UI" target="_blank" rel="noopener">
           <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
-          Code <span class="tbd">SOON</span>
-        </span>
-        <!-- TODO: link the Hugging Face model once public -->
-        <span class="btn btn-disabled" title="Model weights will be released soon">
-          <span aria-hidden="true">🤗</span> Model <span class="tbd">SOON</span>
-        </span>
+          Code
+        </a>
+        <a class="btn btn-ghost" href="https://huggingface.co/inclusionAI/LLaDA-UI" target="_blank" rel="noopener">
+          <span aria-hidden="true">🤗</span> Model
+        </a>
       </div>
 
       <div class="hero-chips">
         <span class="chip">LLaDA2.0-mini-base backbone</span>
-        <span class="chip">16.7B MoE · 1.4B activated</span>
+        <span class="chip">16.7B-parameter MoE</span>
         <span class="chip">Mobile · Desktop · Web · Grounding</span>
       </div>
 
       <div class="stats">
         <div class="stat">
-          <div class="label">ScreenSpot-V2</div>
-          <div class="value">90.7</div>
-          <div class="note">grounding accuracy</div>
-        </div>
-        <div class="stat">
           <div class="label">ScreenSpot-Pro</div>
-          <div class="value">53.7</div>
+          <div class="value">52.9</div>
           <div class="note">grounding · Qwen3-VL-8B: 52.7</div>
         </div>
         <div class="stat">
           <div class="label">AndroidWorld</div>
-          <div class="value">51.2</div>
+          <div class="value">53.5</div>
           <div class="note">mobile · Qwen3-VL-8B: 47.9</div>
         </div>
         <div class="stat">
+          <div class="label">MobileWorld</div>
+          <div class="value">25.6</div>
+          <div class="note">mobile · Qwen3-VL-8B: 9.4</div>
+        </div>
+        <div class="stat">
           <div class="label">WebVoyager</div>
-          <div class="value">55.9</div>
-          <div class="note">web · best reported here</div>
+          <div class="value">56.9</div>
+          <div class="note">web · Qwen3-VL-8B: 45.2</div>
         </div>
         <div class="stat highlight">
           <div class="label">API speedup</div>
@@ -153,7 +150,8 @@
           <p class="lede">
             One verbatim AndroidWorld call, replayed frame by frame. The response starts as
             <span class="mask-chip">&lt;|mask|&gt;</span> tokens and resolves block by block into tagged
-            reasoning and one executable action — nothing is cropped or edited.
+            reasoning and one executable action — the observation is uncropped and the output complete; only
+            line wrapping and typography are changed.
           </p>
         </div>
 
@@ -180,6 +178,21 @@
             </p>
           </div>
         </div>
+
+        <div class="denoise-more" data-reveal>
+          <h3>Two more complete cases</h3>
+          <p class="lede">
+            Two further AndroidWorld denoising sequences, exactly as in the report: the first forms a numeric
+            entry action with <code>Type</code>, the second grounds a list item before producing the
+            <code>Click</code>. Each frame carries its own uncropped observation, task, and full model output,
+            including reasoning, action tags, and special tokens.
+          </p>
+          <div class="player" data-player
+               data-pattern="static/images/denoise-cases/frame-{i}.png"
+               data-frames="132" data-fps="3" data-autoplay="1"
+               data-label="Two complete diffusion-decoding cases">
+          </div>
+        </div>
       </div>
     </section>
 
@@ -194,7 +207,7 @@
             actions in real time — a natural testbed for diffusion LLMs, whose block-parallel,
             arbitrary-order generation promises low latency. LLaDA-UI answers the open question of whether
             that promise survives contact with interactive screens: it <strong>substantially outperforms
-            Qwen2.5-VL-7B and surpasses the similarly scaled Qwen3-VL-8B on most reported GUI
+            Qwen2.5-VL-7B and surpasses the similarly scaled Qwen3-VL-8B on four of six reported GUI
             benchmarks</strong>, while keeping the parallel-decoding advantage.
           </p>
         </div>
@@ -209,27 +222,26 @@
               <span><i style="background:#3d9a8b"></i>Qwen2.5-VL-7B</span>
             </div>
             <p class="radar-foot">
-              Each axis is normalized to the best displayed raw score (printed under the axis name).
-              Qwen2.5-VL-7B's MobileWorld, OSWorld-V, and WebVoyager values are reported upper bounds.
+              Each axis is normalized to the best displayed raw score (printed under the axis name),
+              mirroring Figure 1 of the report.
             </p>
           </div>
           <div class="overview-points">
             <div class="trick">
               <b>Parallel where it counts</b>
-              Block-wise masked diffusion refines many tokens of the current block per step, and
-              Self-Paced Unmasking commits several high-confidence tokens at once — short, structured
-              action outputs are exactly the regime where this pays off.
+              Block-wise masked diffusion refines many tokens of the current block per step instead of
+              one at a time — and GUI agents, which must repeatedly perceive screen states and emit structured,
+              spatially grounded actions in real time, are a natural testbed for that latency advantage.
             </div>
             <div class="trick">
               <b>Bidirectional context</b>
-              Masked reconstruction conditions on both directions inside a block, so the
-              <code style="white-space:nowrap">&lt;think&gt;&lt;action&gt;</code> scaffolding can firm up
-              before every word is decided — visible live in the replay above.
+              Masked reconstruction conditions on both directions inside a block — bidirectional contextual
+              modeling and global semantic refinement that a strictly causal autoregressive decoder cannot offer.
             </div>
             <div class="trick">
               <b>Structured output that parses</b>
-              Across 1,849 AndroidWorld steps: 98.65% of responses parse, 98.59% satisfy the action
-              schema, and all 1,457 coordinate-bearing actions stay in the valid range.
+              Across 1,849 AndroidWorld steps of an intermediate checkpoint: 98.65% of responses parse,
+              98.59% satisfy the action schema, and all 1,457 coordinate-bearing actions stay in the valid range.
             </div>
           </div>
         </div>
@@ -255,7 +267,8 @@
             </div>
             <h3>The first practical diffusion GUI agent</h3>
             <p>
-              Prior diffusion VLMs stopped at static understanding or single-step grounding. LLaDA-UI is the
+              Diffusion VLMs such as LLaDA-V and SDAR-VL showed an alternative to autoregressive multimodal
+              generation, and diffusion has been explored for static GUI grounding. LLaDA-UI is the
               first <strong>open-source diffusion vision&ndash;language agent</strong> that repeatedly perceives
               changing screens, produces executable actions, and completes long-horizon tasks in dynamic
               environments like AndroidWorld, MobileWorld, OSWorld, and WebVoyager.
@@ -289,12 +302,13 @@
             <div class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M12 6l7 3.5v2C19 15 16 17.5 12 18c-4-.5-7-3-7-6.5v-2L12 6z"/></svg>
             </div>
-            <h3>Trained for the non-AR regime</h3>
+            <h3>Tagged reasoning, executable actions</h3>
             <p>
-              A unified action space interleaves chain-of-thought with actions in normalized screen
-              coordinates, adapting the non-autoregressive backbone to interactive control. A
-              <strong>mask-token reweighting</strong> scheme balances gradients across wildly varying response
-              lengths, and complementary masking guarantees every target token is both observed and predicted.
+              Every navigation target is a tagged <code>&lt;think&gt;&hellip;&lt;/think&gt;<wbr>&lt;action&gt;&hellip;&lt;/action&gt;</code>
+              response with spatial outputs normalized to [0,1000]; grounding returns the target point directly.
+              GUI-agent SFT keeps the <strong>block diffusion objective</strong> and MoE balancing from
+              pre-training, where mask-token reweighting and complementary masking balance learning across
+              targets of substantially different lengths.
             </p>
           </div>
         </div>
@@ -317,10 +331,10 @@
         <figure class="figure" data-reveal>
           <img src="static/images/framework.png" alt="The LLaDA-UI framework: multi-resolution GUI observations from web, mobile, and desktop pass through a native-resolution vision encoder into the LLaDA 2.0 block-wise diffusion LM decoder, which denoises mask tokens into tagged reasoning and executable actions." loading="lazy">
           <figcaption>
-            <strong>The framework of LLaDA-UI.</strong> Native-resolution screenshots of any aspect ratio
-            (a 1024&times;768 web trajectory, a 1080&times;2400 phone screen, a 1920&times;1080 desktop) are
-            tokenized by the vision encoder and consumed alongside instruction and history tokens; masked
-            output blocks are refined in parallel into <code>&lt;think&gt;&hellip;&lt;/think&gt;
+            <strong>The framework of LLaDA-UI.</strong> GUI observations from web, mobile, and desktop
+            environments (1024&times;768, 1080&times;2400, and 1920&times;1080 in the figure) are encoded at native
+            resolution and interleaved with task and interaction-history tokens; the LLaDA2.0 block-wise
+            diffusion decoder progressively denoises masked output tokens into <code>&lt;think&gt;&hellip;&lt;/think&gt;
             &lt;action&gt;&hellip;&lt;/action&gt;</code> responses.
           </figcaption>
         </figure>
@@ -330,10 +344,11 @@
             <span class="arch-tag">Backbone</span>
             <h3>Diffusion language model</h3>
             <p>
-              LLaDA2.0-mini-base — an MoE diffusion LLM in the Ling2.0 lineage. Block-wise masked diffusion
-              lets multiple tokens within the current block be refined in parallel instead of one at a time.
+              LLaDA2.0-mini-base — a 16.7B-parameter MoE diffusion LLM following an architecture similar to
+              Ling2.0. Block-wise masked diffusion lets multiple tokens within the current block be refined
+              in parallel instead of one at a time.
             </p>
-            <span class="arch-spec">MoE · 16.7B total · 1.4B activated</span>
+            <span class="arch-spec">MoE · 16.7B total parameters</span>
           </div>
           <div class="arch-card">
             <span class="arch-tag">Perception</span>
@@ -349,8 +364,8 @@
             <h3>Vision&ndash;language projector</h3>
             <p>
               Groups every four spatially adjacent visual features, then projects them through a two-layer
-              MLP into the LLM embedding space — compressing long screenshot token sequences without losing
-              the layout signal.
+              MLP into the LLM embedding space — substantially reducing computational overhead while flexibly
+              compressing image feature sequences of varying lengths.
             </p>
             <span class="arch-spec">4&times; spatial merge · 2-layer MLP</span>
           </div>
@@ -401,7 +416,7 @@
             <h3>Multi-task pre-training</h3>
             <p>
               Reasoning-intensive data lands last: multimodal VQA, multimodal mathematics, and agent-based
-              tasks that build the deeper vision&ndash;language connections GUI work requires.
+              tasks that build deeper connections between the visual and linguistic modalities.
             </p>
             <ul class="stage-facts">
               <li>70B tokens · 16K sequence</li>
@@ -417,10 +432,10 @@
             </div>
             <h3>GUI-agent SFT: the data</h3>
             <p>
-              <strong>6M+ samples</strong> accumulated through the UI-Venus project: ~2M grounding, 2M+ mobile,
-              ~1M desktop, and ~1M web examples. Mobile navigation alone spans <strong>100+ Chinese and 70+
-              English apps</strong>, with single-turn and history-aware instances exposing both local operations
-              and multi-step context.
+              <strong>6M+ samples</strong> after conversion, filtering, and deduplication, accumulated through the
+              UI-Venus project across four complementary domains: mobile navigation spanning <strong>100+ Chinese
+              and 70+ English apps</strong>, desktop and web data covering cross-application and browser
+              workflows, and grounding data connecting language instructions to visual targets.
             </p>
           </div>
           <div class="card">
@@ -430,7 +445,7 @@
             <h3>GUI-agent SFT: the recipe</h3>
             <p>
               Initialized from the multimodal foundation and fine-tuned end to end for <strong>three epochs at
-              peak LR 1&times;10<sup>&minus;5</sup></strong> (cosine decay, 3% warmup), 16K max sequence length,
+              peak LR 1&times;10<sup>&minus;5</sup></strong> (cosine decay, 3% warmup), 16K max sequence length, mixed precision, micro-batch size one per GPU,
               ~12.8M max image pixels, on 32&ndash;64 H100 GPUs — retaining the block diffusion objective and
               MoE balancing from pre-training.
             </p>
@@ -447,11 +462,11 @@
         </figure>
 
         <div class="code-block" data-reveal>
-          <div class="code-head">Unified action space — navigation targets are tagged, grounding returns a point</div>
+          <div class="code-head">Response format — navigation targets are tagged, grounding returns a point</div>
           <pre><span class="tk">&lt;think&gt;</span> visible reasoning over the task, history, and current screen <span class="tk">&lt;/think&gt;</span>
 <span class="tk">&lt;action&gt;</span><span class="tv">Click(box=(x,y))</span><span class="tk">&lt;/action&gt;</span>
 
-<span class="tc">// available actions (mobile shown; desktop and web analogous)</span>
+<span class="tc">// available actions (mobile shown; desktop adds RightClick/Hotkey, web adds Scroll/Launch/Hover/Hotkey)</span>
 Click · DoubleClick · LongPress · Drag · Swipe · Type(content='')
 LaunchApp(app='') · Wait() · CallUser(content='') · GetScreenshot()
 PressBack() · PressHome() · PressEnter() · PressRecent()
@@ -479,18 +494,20 @@ Answer(content='') · Finished(content='')
           </div>
           <div class="trick">
             <b>Auxiliary-loss-free MoE balancing</b>
-            RMS-normalized bias updates and scaled routing gates keep expert load uniform without an
-            auxiliary loss term — stable routing at 16.7B total parameters.
+            RMS-normalized bias updates and routing gates scaled by 2.5 keep expert load uniform without an
+            auxiliary loss term, improving numerical stability during training.
           </div>
           <div class="trick">
-            <b>Self-Paced Unmasking (SPU)</b>
-            Instead of a fixed number of commits per denoising step, SPU adaptively unmasks all positions
-            whose confidence clears a tolerance — fewer forward passes, same output.
+            <b>Current-image-only evaluation</b>
+            On MobileWorld, OSWorld, and WebVoyager each request carries exactly one image — the current
+            screenshot — plus the latest raw <code style="white-space:nowrap">&lt;think&gt;&lt;action&gt;</code>
+            turn; historical screenshots are never replayed (MobileWorld keeps no environment-side history,
+            OSWorld keeps one turn, WebVoyager places the task in the system prompt).
           </div>
           <div class="trick">
-            <b>Training stack</b>
-            Implemented with dFactory on VeOmni: distributed multimodal loading, native-resolution
-            processing, boundary-preserving sequence packing, and MoE training.
+            <b>Pre-training stack</b>
+            Multimodal pre-training runs on dFactory, built on VeOmni: distributed multimodal loading,
+            native-resolution processing, boundary-preserving sequence packing, and MoE training.
           </div>
         </div>
       </div>
@@ -514,7 +531,6 @@ Answer(content='') · Finished(content='')
             <span><i class="sw sw-ours"></i>LLaDA-UI (diffusion MoE)</span>
             <span><i class="sw sw-diff"></i>Other diffusion models</span>
             <span><i class="sw sw-base"></i>Autoregressive models</span>
-            <span><i class="sw sw-bound"></i>Reported upper bound</span>
           </div>
 
           <div class="tabs" role="tablist" aria-label="Result groups">
@@ -530,7 +546,10 @@ Answer(content='') · Finished(content='')
               Static grounding (point-in-box accuracy) and end-to-end navigation success in executable
               environments. LLaDA-UI exceeds Qwen2.5-VL-7B on every reported benchmark and is stronger than
               Qwen3-VL-8B on ScreenSpot-Pro, AndroidWorld, MobileWorld, and WebVoyager; ScreenSpot-V2 is
-              close and OSWorld-Verified remains the main gap.
+              close and OSWorld-Verified remains the main gap. Spatial outputs are normalized to [0,1000] and
+              executed by each benchmark runner; both the standalone Hugging Face inference path and the
+              OpenAI-compatible SGLang serving path (two data-parallel workers on a two-GPU host) were
+              validated end to end.
             </p>
             <div class="chart-grid" data-charts="agent"></div>
             <details class="full-table" data-src="partials/tables/agent.html">
@@ -542,13 +561,15 @@ Answer(content='') · Finished(content='')
           <div class="panel" id="panel-foundation" role="tabpanel" aria-labelledby="tab-foundation" hidden>
             <p class="panel-note">
               The foundation checkpoint before GUI-agent SFT, trained on just 145B multimodal tokens
-              (Qwen2.5-VL: 4.1T; Qwen3-VL: 2.2T), sets a new state of the art among diffusion MLLMs —
-              e.g. +12.8 / +13.6 / +31.1 points over SDAR-VL-8B on MathVista, MathVision, and MathVerse.
-              Six representative benchmarks below; all 31 in the full table.
+              (Qwen2.5-VL: 4.1T; Qwen3-VL: 2.2T), sets a new state of the art among diffusion MLLMs (leading
+              on 18 of 22 benchmarks) —
+              relative gains of 12.8% / 13.6% / 31.1% over SDAR-VL-8B on MathVista, MathVision, and MathVerse,
+              and 2.5% / 8.6% / 17.8% on ChartQA, CharXiv-DQ, and OCRBench.
+              Six representative benchmarks below; all 22 in the full table.
             </p>
             <div class="chart-grid" data-charts="foundation"></div>
             <details class="full-table" data-src="partials/tables/foundation.html">
-              <summary>Full comparison table — General multimodal &amp; text (31 benchmarks)</summary>
+              <summary>Full comparison table — General multimodal (22 benchmarks)</summary>
             </details>
           </div>
 
@@ -556,8 +577,10 @@ Answer(content='') · Finished(content='')
           <div class="panel" id="panel-efficiency" role="tabpanel" aria-labelledby="tab-efficiency" hidden>
             <p class="panel-note">
               Paired non-cached API latency against Qwen3-VL-8B: both models on four H100 GPUs, 2,048-token
-              generation cap, normal EOS stopping, model wall-clock time only, five non-cache-hit calls per
-              domain. LLaDA-UI generates more tokens per call and still answers several times sooner.
+              generation cap, normal EOS stopping, model wall-clock time only (environment reset and action
+              execution excluded), five non-cache-hit calls per domain — exact Qwen replays that hit its serving
+              cache are excluded, and visually equivalent screenshots with different PNG hashes complete its
+              non-cached sample sets. LLaDA-UI generates more tokens per call and still answers several times sooner.
             </p>
             <div class="chart-grid" data-charts="efficiency"></div>
             <div class="split-grid" style="margin-top:16px">
@@ -565,14 +588,15 @@ Answer(content='') · Finished(content='')
                 <span class="cap">Mean speedup on mobile inputs</span>
                 <div class="big"><span class="count-up" data-target="8.95">8.95</span><small>×</small></div>
                 <p>
-                  5.9 s versus 53.0 s mean latency per MobileWorld-style call. Median speedups across web,
+                  5.9 s versus 53.0 s mean latency per call on MobileWorld inputs. Median speedups across web,
                   desktop, and mobile: 3.43×, 6.78×, and 8.81×.
                 </p>
               </div>
               <p class="section-footnote" style="margin:0">
-                Qwen3-VL-8B also has an exact-replay cache-hit mode (0.89&ndash;1.79 s) that the evaluated
+                Qwen3-VL-8B also has an exact-replay cache-hit mode (0.890&ndash;1.284 s on Web, 1.444 s on
+                OSWorld, 1.746&ndash;1.794 s on MobileWorld) that the evaluated
                 LLaDA-UI SGLang stack does not expose; it is reported separately in the paper because normal
-                GUI interaction produces a new screenshot at every step, so exact replays do not occur. These
+                GUI interaction produces a new screenshot at each step. These
                 fixed-input measurements characterize per-call latency rather than serving throughput.
               </p>
             </div>
@@ -581,7 +605,8 @@ Answer(content='') · Finished(content='')
           <!-- ---------- Analysis ---------- -->
           <div class="panel" id="panel-analysis" role="tabpanel" aria-labelledby="tab-analysis" hidden>
             <p class="panel-note">
-              A complete 116-task AndroidWorld evaluation (1,849 model steps) shows the model reliably obeys
+              A complete 116-task AndroidWorld evaluation of an intermediate LLaDA-UI checkpoint (1,849 model
+              steps; diagnostics separate from the final benchmark results) shows the model reliably obeys
               the structured format — failures come from long-horizon recovery and high-resolution grounding,
               not malformed output.
             </p>
@@ -647,9 +672,10 @@ Answer(content='') · Finished(content='')
               </div>
               <div class="table-foot">
                 Task split, prompt, action parser, and maximum environment steps held fixed. Disabling EOS
-                early stopping gains +9.9 points — premature termination can interrupt a parseable action —
-                while coarsening blocks and cutting refinement rounds (64 / 16) loses 9.7 points: interactive
-                reliability is sensitive to the block-size / denoising-steps trade-off.
+                early stopping gains +9.9 points — early termination can interrupt the formation of a parseable
+                action, though the setting should still be validated for the released model — while coarsening
+                blocks and cutting refinement rounds (64 / 16) loses 9.7 points: interactive reliability is
+                sensitive to the block-size / denoising-steps trade-off.
               </div>
             </div>
 
@@ -683,14 +709,14 @@ Answer(content='') · Finished(content='')
             <h3>Constrained flight search</h3>
             <span class="trace-tag">WebVoyager · 20 steps</span>
             <p>
-              Long-horizon constraint tracking on the live web: find the one-way Calgary&rarr;New York flight
+              Long-horizon constraint tracking on the web: find the one-way Calgary&rarr;New York flight
               on a fixed date with the lowest CO&#8322; emissions, keeping the constraint in mind across
               twenty steps of forms, filters, and result lists.
             </p>
           </div>
           <div class="player" data-player
                data-pattern="static/images/traces/web/frame-{i}.png"
-               data-frames="20" data-fps="0.8" data-autoplay="1"
+               data-frames="20" data-fps="0.6" data-autoplay="1"
                data-label="WebVoyager trajectory"></div>
         </div>
 
@@ -705,7 +731,7 @@ Answer(content='') · Finished(content='')
           </div>
           <div class="player" data-player
                data-pattern="static/images/traces/os/frame-{i}.png"
-               data-frames="10" data-fps="0.8" data-autoplay="1"
+               data-frames="10" data-fps="0.6" data-autoplay="1"
                data-label="OSWorld trajectory"></div>
         </div>
 
@@ -720,7 +746,7 @@ Answer(content='') · Finished(content='')
           </div>
           <div class="player" data-player
                data-pattern="static/images/traces/mobile/frame-{i}.png"
-               data-frames="12" data-fps="0.8" data-autoplay="1"
+               data-frames="12" data-fps="0.6" data-autoplay="1"
                data-label="MobileWorld trajectory"></div>
         </div>
       </div>
@@ -733,8 +759,8 @@ Answer(content='') · Finished(content='')
           <span class="eyebrow">Takeaway &amp; limits</span>
           <h2>A viable new direction — stated with its caveats</h2>
           <p class="lede">
-            As the first practical open-source diffusion GUI agent, LLaDA-UI demonstrates that diffusion
-            language models offer a real alternative for vision&ndash;language agents. The report is equally
+            As the first open-source diffusion GUI agent, LLaDA-UI demonstrates that diffusion language
+            models offer a viable new direction for vision&ndash;language agents. The report is equally
             explicit about where it still falls short:
           </p>
         </div>
@@ -753,7 +779,7 @@ Answer(content='') · Finished(content='')
           <div class="limit">
             <b>Decoding sensitivity</b>
             Small changes to block size and denoising steps can materially alter both task success and
-            latency; the settings need validation per deployment.
+            latency; decoding robustness is a main direction for future work.
           </div>
         </div>
       </div>
@@ -765,16 +791,16 @@ Answer(content='') · Finished(content='')
         <div class="section-head" data-reveal>
           <span class="eyebrow">Citation</span>
           <h2>BibTeX</h2>
-          <p class="lede">If you find LLaDA-UI useful, please cite the technical report. <span class="tbd">TODO · arXiv ID</span></p>
+          <p class="lede">If you find LLaDA-UI useful, please cite the technical report. <span class="tbd">arXiv SOON</span></p>
         </div>
         <div class="bibtex-card" data-reveal>
           <button class="copy-btn" id="copy-bibtex" type="button">Copy</button>
 <!-- TODO: update the arXiv identifier once the report is public -->
 <pre id="bibtex-text">@article{lladaui2026,
-  title   = {LLaDA-UI: An MoE-based Diffusion Vision-Language GUI Agent},
+  title   = {LLaDA-UI: Bringing Block-wise Diffusion to Vision-Language GUI Agents},
   author  = {Gu, Zhangxuan and Chen, Haoxing and Qin, Qi and Xin, Yi and Gan, Kai and
              Liu, Lin and Cui, Long and Wang, Xiaomei and Zhou, Beitong and Zhang, Yunzhu and
-             Zeng, Zhengwen and Gao, Changlong and Chen, Weizhi and Zhang, Rongchao and
+             Zeng, Zhengwen and Gao, Changlong and Chen, Weizhi and Zhang, Rongchao and Wu, Haoyuan and
              Shen, Shuheng and Meng, Changhua and Wang, Weiqiang and Li, Jianguo and Lan, Zhenzhong},
   journal = {arXiv preprint arXiv:XXXX.XXXXX},
   year    = {2026}
@@ -800,19 +826,19 @@ Answer(content='') · Finished(content='')
             <span>LLaDA-<span class="ui">UI</span></span>
           </a>
           <p class="foot-note">
-            An MoE-based diffusion vision&ndash;language GUI agent by Inclusion AI, the Venus Team at
-            Ant Group, and Westlake University — establishing block-wise diffusion as a practical
-            generative paradigm for multimodal GUI agents.
+            Bringing block-wise diffusion to vision&ndash;language GUI agents: a 16.7B-parameter MoE diffusion
+            GUI agent by Inclusion AI, the Venus Team at Ant Group, and Westlake University — establishing
+            block-wise diffusion as a practical generative paradigm for multimodal GUI agents.
           </p>
           <img class="corp-logo" src="static/images/inclusion-antgroup.png" alt="Ant Group and Inclusion AI logos" loading="lazy">
         </div>
         <div>
           <h4>Resources</h4>
           <ul>
-            <!-- TODO: link the report / repo / weights once public -->
+            <!-- TODO: link the technical report (arXiv) once public -->
             <li>Technical report <span class="tbd">SOON</span></li>
-            <li>GitHub repository <span class="tbd">SOON</span></li>
-            <li>Hugging Face model <span class="tbd">SOON</span></li>
+            <li><a href="https://github.com/inclusionAI/LLaDA-UI" target="_blank" rel="noopener">GitHub repository</a></li>
+            <li><a href="https://huggingface.co/inclusionAI/LLaDA-UI" target="_blank" rel="noopener">Hugging Face model</a></li>
           </ul>
         </div>
         <div>
@@ -823,6 +849,7 @@ Answer(content='') · Finished(content='')
             <li><a href="https://arxiv.org/abs/2505.16933" target="_blank" rel="noopener">LLaDA-V</a></li>
             <li><a href="https://arxiv.org/abs/2604.20796" target="_blank" rel="noopener">LLaDA2.0-Uni</a></li>
             <li><a href="https://arxiv.org/abs/2508.10833" target="_blank" rel="noopener">UI-Venus</a></li>
+            <li><a href="https://arxiv.org/abs/2602.09082" target="_blank" rel="noopener">UI-Venus-1.5</a></li>
           </ul>
         </div>
       </div>

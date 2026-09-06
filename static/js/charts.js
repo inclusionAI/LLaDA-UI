@@ -34,7 +34,7 @@
     [25, 50, 75, 100].forEach(function (frac) {
       var line = el("div", "gridline");
       line.style.bottom = frac + "%";
-      var lbl = el("i", null, String(Math.round(spec.max * frac / 100)));
+      var lbl = el("i", null, String(Number((spec.max * frac / 100).toFixed(1))));
       line.appendChild(lbl);
       plot.appendChild(line);
     });

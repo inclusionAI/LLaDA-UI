@@ -64,6 +64,12 @@
   width: 100%;
 }
 
+.denoise-more { margin-top: 44px; }
+.denoise-more h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin: 0 0 8px; }
+.denoise-more .lede { color: var(--muted); font-size: 16.5px; margin: 0 0 16px; max-width: 860px; }
+.denoise-more .lede code { color: var(--ink); }
+.denoise-more .player { max-width: 980px; margin: 0 auto; }
+
 .player .frame-box { position: relative; }
 .player .frame-box img {
   width: 100%;

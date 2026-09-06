@@ -12,18 +12,17 @@
     { name: "ScreenSpot-V2", max: 94.0 },
     { name: "ScreenSpot-Pro", max: 65.2 },
     { name: "AndroidWorld", max: 57.8 },
-    { name: "MobileWorld", max: 20.0 },
+    { name: "MobileWorld", max: 25.6 },
     { name: "OSWorld-V", max: 41.8 },
-    { name: "WebVoyager", max: 55.9 }
+    { name: "WebVoyager", max: 56.9 }
   ];
 
-  /* Raw benchmark scores in axis order. Qwen2.5-VL-7B's last three values are
-     reported upper bounds and are plotted at the bounds. */
+  /* Raw benchmark scores in axis order, from the report's GUI-agent results table. */
   var MODELS = [
     { name: "Qwen2.5-VL-7B", values: [86.0, 26.8, 25.5, 7.0, 3.0, 11.0], color: "#3d9a8b", dash: "2 4", width: 1.6, fill: 0 },
     { name: "Qwen3.5-9B", values: [94.0, 65.2, 57.8, 17.9, 41.8, 46.6], color: "#8a94a6", dash: "6 4", width: 1.6, fill: 0 },
     { name: "Qwen3-VL-8B", values: [93.0, 52.7, 47.9, 9.4, 33.9, 45.2], color: "#e07a5f", dash: "", width: 1.8, fill: 0.07 },
-    { name: "LLaDA-UI", values: [90.7, 53.7, 51.2, 20.0, 15.0, 55.9], color: "#2a4b8c", dash: "", width: 2.6, fill: 0.15, dots: true }
+    { name: "LLaDA-UI", values: [90.7, 52.9, 53.5, 25.6, 29.39, 56.9], color: "#2a4b8c", dash: "", width: 2.6, fill: 0.15, dots: true }
   ];
 
   var NS = "http://www.w3.org/2000/svg";

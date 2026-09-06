@@ -315,7 +315,7 @@
 
 .footer .brand { font-size: 18px; }
 .footer .foot-note { color: var(--muted); font-size: 14px; max-width: 400px; margin-top: 12px; }
-.footer .corp-logo { max-width: 300px; margin-top: 18px; opacity: 0.9; }
+.footer .corp-logo { width: 300px; max-width: 100%; margin-top: 18px; opacity: 0.9; }
 
 .footer h4 {
   font-family: var(--font-mono);
