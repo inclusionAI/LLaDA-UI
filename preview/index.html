@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><base href="../">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLaDA-UI: Bringing Block-wise Diffusion to Vision-Language GUI Agents · Model Card Preview</title>
+<style>
+:root{--ink:#1f2937;--muted:#64748b;--line:#d9e2ec;--blue:#2563a6;--pale:#f4f8fc}
+*{box-sizing:border-box} body{margin:0;background:#f7f8fa;color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.top{height:64px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;position:sticky;top:0;z-index:2}
+.brand{font-weight:750;color:#173b70;font-size:18px} .badge{margin-left:12px;background:#eaf3ff;color:#24598e;border-radius:999px;padding:3px 10px;font-size:12px}
+main{max-width:1040px;margin:28px auto 80px;background:white;border:1px solid var(--line);border-radius:14px;padding:42px 54px;box-shadow:0 8px 28px #15395a12}
+h1{font-size:38px;margin:0 0 18px;color:#173b70} h2{font-size:26px;margin-top:42px;border-bottom:1px solid var(--line);padding-bottom:8px} h3{font-size:20px;margin-top:30px;color:#234f7f}
+p{margin:12px 0} img{max-width:100%;height:auto;border-radius:8px} table{border-collapse:collapse;width:100%;display:block;overflow-x:auto;margin:18px 0}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;white-space:nowrap} th{background:var(--pale)}
+pre{background:#0f2034;color:#e8f2ff;padding:18px;border-radius:9px;overflow:auto;line-height:1.45} code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em}
+blockquote{border-left:4px solid #75a7d8;background:#f5f9fd;margin:18px 0;padding:10px 18px;color:#40566e}
+li{margin:5px 0} a{color:var(--blue)} @media(max-width:720px){main{margin:0;border:0;border-radius:0;padding:28px 20px}}
+</style></head><body>
+<div class="top"><span class="brand">LLaDA-UI</span><span class="badge">Model Card · local preview</span></div>
+<main><h1>LLaDA-UI: Bringing Block-wise Diffusion to Vision-Language GUI Agents</h1>
+<p>LLaDA-UI is an MoE-based, block-wise diffusion vision-language GUI agent. It combines a native dynamic-resolution vision encoder with the LLaDA2.0-mini-base diffusion language backbone, and generates reasoning and GUI actions through the same block-wise diffusion decoder.</p>
+<p><strong>Model weights:</strong> <a href="https://huggingface.co/inclusionAI/LLaDA-UI">https://huggingface.co/inclusionAI/LLaDA-UI</a><br>
+<strong>Code:</strong> <a href="https://github.com/inclusionAI/LLaDA-UI">https://github.com/inclusionAI/LLaDA-UI</a></p>
+<p align="center">
+  <img src="assets/figure1_overview_animated.gif" width="100%" alt="LLaDA-UI GUI-agent benchmark comparison and animated qualitative diffusion decoding">
+</p>
+<p align="center"><em>Figure 1. LLaDA-UI GUI-agent performance and qualitative block-wise diffusion decoding. The radar chart and GUI observation remain static while the model output is progressively denoised.</em></p>
+<h2>Highlights</h2>
+<ul><li><strong>Diffusion-native multimodal agent:</strong> LLaDA-UI extends a masked diffusion</li></ul>
+<p>language model to visual understanding and executable GUI interaction.</p>
+<ul><li><strong>MoE architecture:</strong> approximately 16.7B total parameters end to end.</li></ul>
+<ul><li><strong>Two-stage training:</strong> large-scale multimodal pre-training aligns a</li></ul>
+<p>native-resolution SigLIP-initialized ViT with LLaDA2.0-mini-base, followed by GUI-agent supervised fine-tuning.</p>
+<ul><li><strong>Cross-platform interaction:</strong> training covers grounding, mobile, desktop,</li></ul>
+<p>and web tasks, including data from more than 100 Chinese mobile applications and more than 70 English mobile applications.</p>
+<ul><li><strong>Competitive GUI performance:</strong> LLaDA-UI outperforms Qwen2.5-VL-7B across all six reported GUI benchmarks and surpasses Qwen3-VL-8B on ScreenSpot-Pro, AndroidWorld, MobileWorld, and WebVoyager.</li></ul>
+<ul><li><strong>Diffusion-specific analysis:</strong> the accompanying report studies structured</li></ul>
+<p>action validity, trajectory-length effects, EOS handling, denoising steps, and block size.</p>
+<h2>Model Overview</h2>
+<table><thead><tr><th>Item</th><th>Description</th></tr></thead><tbody><tr><td>Model type</td><td>MoE block-wise diffusion vision-language GUI agent</td></tr><tr><td>Total parameters</td><td>Approximately 16.7B end-to-end</td></tr><tr><td>Language backbone</td><td>LLaDA2.0-mini-base</td></tr><tr><td>Vision encoder</td><td>Native-resolution ViT initialized from SigLIP, with 2D RoPE</td></tr><tr><td>Vision-language connector</td><td>Spatial 4-to-1 feature grouping followed by a two-layer MLP projector</td></tr><tr><td>Output</td><td>Text reasoning and structured GUI actions</td></tr><tr><td>Spatial convention</td><td>Normalized coordinates in <code>[0, 999]</code></td></tr><tr><td>Training stages</td><td>Multimodal pre-training, then GUI-agent SFT</td></tr><tr><td>Supported domains</td><td>GUI grounding, mobile, desktop, and web</td></tr></tbody></table>
+<h2>Benchmark Results</h2>
+<h3>GUI-Agent Evaluation</h3>
+<p align="center"><img src="assets/gui_agent_evaluation.png" width="100%" alt="LLaDA-UI GUI-agent benchmark results from Table 3 of the technical report"></p>
+<p align="center"><em>GUI-agent evaluation reproduced directly from Table 3 of the technical report.</em></p>
+<p>Evaluation versions, task counts, prompts, reset policies, action limits, serving backends, and baseline provenance will be documented in the final release.</p>
+<h2>Qualitative GUI-Agent Traces</h2>
+<p>The following GIFs replay complete successful trajectories. Every frame shows the original screenshot together with the verbatim model output for that step.</p>
+<h3>WebVoyager: constrained flight search</h3>
+<p align="center">
+  <img src="assets/traces/webvoyager_google_flights.gif" width="100%" alt="Complete WebVoyager Google Flights trajectory">
+</p>
+<p>LLaDA-UI configures a one-way Calgary-New York flight, navigates to December 3, 2026, applies the lower-emissions constraint, and returns the verified lowest-CO2 itinerary over a 20-step trajectory.</p>
+<h3>OSWorld: Calc to Writer</h3>
+<p align="center">
+  <img src="assets/traces/osworld_calc_to_writer.gif" width="100%" alt="Complete OSWorld Calc-to-Writer trajectory">
+</p>
+<p>LLaDA-UI selects a formatted table in LibreOffice Calc, transfers it to Writer, and saves the resulting document as <code>price.docx</code> on the desktop.</p>
+<h3>MobileWorld: email to alarm</h3>
+<p align="center">
+  <img src="assets/traces/mobileworld_email_to_alarm.gif" width="100%" alt="Complete MobileWorld email-to-alarm trajectory">
+</p>
+<p>LLaDA-UI reads the 7:00 PM Christmas-party time from email, computes the one-hour offset, opens the Clock application, and verifies the enabled 6:00 PM alarm.</p>
+<h2>Quickstart</h2>
+<p>Use separate environments for standalone Hugging Face inference and SGLang serving because their tested Transformers and PyTorch versions differ.</p>
+<h3>Hugging Face inference</h3>
+<p><a href="inference/inference_hf.py"><code>inference/inference_hf.py</code></a> is a self-contained grounding entry point; it does not require the training repository.</p>
+<pre><code class="language-bash">pip install torch==2.5.1 torchvision \
+  --index-url https://download.pytorch.org/whl/cu124
+pip install transformers==4.51.0 Pillow numpy einops accelerate \
+  sentencepiece protobuf safetensors
+pip install ninja
+pip install flash-attn==2.7.4.post1 --no-build-isolation --no-cache-dir</code></pre>
+<p>Download the checkpoint from the <a href="https://huggingface.co/inclusionAI/LLaDA-UI">LLaDA-UI Hugging Face repository</a>, then pass its local directory to <code>--ckpt</code>:</p>
+<pre><code class="language-bash">CUDA_VISIBLE_DEVICES=0 IMAGE_MAX_PIXELS=12845056 \
+python -u inference/inference_hf.py \
+  --ckpt /path/to/hf_ckpt_unpacked \
+  --image /path/to/screenshot.png \
+  --prompt &quot;close this window&quot; \
+  --gen-length 32 \
+  --steps 32 \
+  --block-length 32</code></pre>
+<p>The script prints the verbatim generation and parsed normalized point. Use <code>IMAGE_MAX_PIXELS=1003520</code> for the default-resolution profile. Run <code>python inference/inference_hf.py --help</code> for ScreenSpot-V2 verification options.</p>
+<h3>SGLang serving</h3>
+<p>Use a dedicated environment and follow the <a href="inference/sglang_server/README.md">minimal server recipe</a>:</p>
+<pre><code class="language-bash">CUDA_VISIBLE_DEVICES=0,1 SGLANG_DP_SIZE=2 \
+bash serve_llada_ui.sh /path/to/hf_ckpt_unpacked</code></pre>
+<p>Then replay the packaged mobile, desktop, and web requests:</p>
+<pre><code class="language-bash">export SGLANG_BASE_URL=http://127.0.0.1:30000/v1
+export SGLANG_MODEL=LLaDA-UI
+
+python3 inference/sglang_client.py --example mobile
+python3 inference/sglang_client.py --example desktop
+python3 inference/sglang_client.py --example web</code></pre>
+<p>Each JSON embeds its screenshot and an evaluated current-image-only multi-turn request. The packaged step-<em>t</em>&gt;0 cases use the exact role sequence <code>system, user(""), assistant(previous), user(current)</code>: the empty historical user turn is followed by the latest raw <code>&lt;think&gt;...&lt;/think&gt;&lt;action&gt;...&lt;/action&gt;</code> response, while the final user turn contains text first and exactly one image, the current screenshot. Historical screenshots are never replayed. Mobile keeps its task/history headings in the current user caption; desktop and web keep the task in the system prompt and use <code>Current Screenshot:</code> as the current caption. At step 0, omit the empty user and previous assistant messages. Send another compatible request with <code>python3 inference/sglang_client.py --request request.json</code>.</p>
+<h2>GUI Action Format</h2>
+<p>For navigation, the model maps the task, current screenshot, and available interaction history to tagged reasoning and a text-serialized action. A typical response has the following form:</p>
+<pre><code class="language-text">&lt;think&gt;Reasoning grounded in the current GUI state.&lt;/think&gt;
+&lt;action&gt;Click(box=(x, y))&lt;/action&gt;</code></pre>
+<p>Coordinates are integer-normalized to <code>[0, 999]</code>. The action vocabulary is platform aware:</p>
+<ul><li><strong>Mobile:</strong> <code>Click</code>, <code>DoubleClick</code>, <code>LongPress</code>, <code>Drag</code>, <code>Swipe</code>, <code>Type</code>,</li></ul>
+<p><code>LaunchApp</code>, <code>Wait</code>, <code>CallUser</code>, <code>GetScreenshot</code>, device navigation, <code>Answer</code>, and <code>Finished</code>.</p>
+<ul><li><strong>Desktop:</strong> pointing actions, <code>RightClick</code>, <code>Drag</code>, <code>Swipe</code>, <code>Type</code>,</li></ul>
+<p><code>Hotkey</code>, <code>Wait</code>, <code>CallUser</code>, and <code>Finished</code>.</p>
+<ul><li><strong>Web:</strong> pointing actions, <code>Drag</code>, directional <code>Scroll</code>, <code>Hover</code>, <code>Type</code>,</li></ul>
+<p>URL <code>Launch</code>, <code>Hotkey</code>, browser navigation, <code>CallUser</code>, and <code>Finished</code>.</p>
+<ul><li><strong>Grounding:</strong> directly returns <code>[x,y]</code>, with <code>[-1,-1]</code> for an infeasible</li></ul>
+<p>request, rather than returning a navigation action.</p>
+<p>Following the dominant training-data format, point-based navigation actions use <code>box=(x,y)</code>. Here <code>box</code> denotes one normalized interaction coordinate rather than a rectangular region.</p>
+<h2>Citation</h2>
+<pre><code class="language-bibtex">@techreport{lladaui2026,
+  title  = {LLaDA-UI: Bringing Block-wise Diffusion to Vision-Language GUI Agents},
+  author = {Zhangxuan Gu and Haoxing Chen and Qi Qin and Yi Xin and
+            Kai Gan and Lin Liu and Long Cui and Xiaomei Wang and
+            Beitong Zhou and Yunzhu Zhang and Zhengwen Zeng and
+            Changlong Gao and Weizhi Chen and Rongchao Zhang and
+            Haoyuan Wu and Shuheng Shen and Changhua Meng and Weiqiang Wang and
+            Jianguo Li and Zhenzhong Lan},
+  year   = {2026},
+  url    = {https://huggingface.co/inclusionAI/LLaDA-UI}
+}</code></pre>
+</main></body></html>

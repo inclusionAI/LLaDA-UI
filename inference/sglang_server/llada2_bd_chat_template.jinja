@@ -1,0 +1,12 @@
+{%- macro render_content(content) -%}
+{%- if content is string -%}{{- content -}}
+{%- else -%}
+{%- for part in content -%}
+{%- if part.type == "text" -%}{{- part.text -}}
+{%- elif part.type == "image" -%}{{- "<|vision_start|><|image_pad|><|vision_end|>" -}}
+{%- elif part.type == "video" -%}{{- "<|vision_start|><|video_pad|><|vision_end|>" -}}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endmacro -%}
+{%- if messages and messages[0].role == 'system' -%}{{- '<role>SYSTEM</role>' + messages[0].content + '\n' -}}{%- endif -%}{%- for message in messages -%}{%- set content = render_content(message.content) -%}{%- if message.role == 'user' -%}{{- '<role>HUMAN</role>' + content + '<|role_end|>' -}}{%- elif message.role == 'assistant' -%}{{- '<role>ASSISTANT</role>' + content + '<|role_end|>' -}}{%- endif -%}{%- endfor -%}{%- if add_generation_prompt -%}{{- '<role>ASSISTANT</role>' -}}{%- endif -%}
