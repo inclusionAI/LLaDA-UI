@@ -36,11 +36,10 @@ python3 -m http.server 8000
 # → http://localhost:8000
 ```
 
-## Pending TODOs
+## Resource links
 
-Search the sources for `TODO` / `SOON`:
-
-- arXiv link + identifier (hero button, BibTeX, footer)
+The arXiv report (https://arxiv.org/abs/2609.13287) is linked in the hero, citation section, and footer;
+the BibTeX entry uses the same arXiv identifier.
 
 The GitHub link (https://github.com/inclusionAI/LLaDA-UI) is live in the nav, hero, and footer;
 the Hugging Face link (https://huggingface.co/inclusionAI/LLaDA-UI) is live in the hero and footer.
